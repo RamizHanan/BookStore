@@ -9,27 +9,32 @@ namespace BookStore
     class Book
     {
         public const decimal tax = .08m;
+        private string book1Name;
+        private string book1Author;
+        private string book1ISBN;
+        private decimal book1Price;
 
-        string author = "";
-        string price = "";
-        string ISBN = "";
-        string bookName = "";
+        public string author { get; set; }
+        public decimal price { get; set; }
+        public string ISBN { get; set; }
+        public string bookName { get; set; }
 
-        public Book(string BookName, string Author, string isbn, string Price)
+        public Book(string BookName, string Author, string isbn, decimal Price)
         {
-            author = Author;
-            price = Price;
-            ISBN = isbn;
-            bookName = BookName;
+            this.author = Author ;
+            this.price = Price;
+            this.ISBN = isbn;
+            this.bookName = BookName;
         }
 
         public Book() {
-            author = null;
-            price = null;
-            ISBN = null;
-            bookName = null;
+            this.author = null;
+            this.price = 0.0m;
+            this.ISBN = null;
+            this.bookName = null;
         }
 
+        
     }
     
 }

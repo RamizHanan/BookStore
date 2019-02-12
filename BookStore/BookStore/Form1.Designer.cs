@@ -57,10 +57,9 @@
             // 
             // AddTitle
             // 
-            this.AddTitle.Location = new System.Drawing.Point(1070, 377);
-            this.AddTitle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.AddTitle.Location = new System.Drawing.Point(535, 196);
             this.AddTitle.Name = "AddTitle";
-            this.AddTitle.Size = new System.Drawing.Size(150, 44);
+            this.AddTitle.Size = new System.Drawing.Size(75, 23);
             this.AddTitle.TabIndex = 0;
             this.AddTitle.Text = "Add Title";
             this.AddTitle.UseVisualStyleBackColor = true;
@@ -69,157 +68,140 @@
             // AuthorLabel
             // 
             this.AuthorLabel.AutoSize = true;
-            this.AuthorLabel.Location = new System.Drawing.Point(316, 135);
-            this.AuthorLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.AuthorLabel.Location = new System.Drawing.Point(158, 70);
             this.AuthorLabel.Name = "AuthorLabel";
-            this.AuthorLabel.Size = new System.Drawing.Size(81, 25);
+            this.AuthorLabel.Size = new System.Drawing.Size(41, 13);
             this.AuthorLabel.TabIndex = 1;
             this.AuthorLabel.Text = "Author:";
             // 
             // IsbnLabel
             // 
             this.IsbnLabel.AutoSize = true;
-            this.IsbnLabel.Location = new System.Drawing.Point(1338, 127);
-            this.IsbnLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.IsbnLabel.Location = new System.Drawing.Point(669, 66);
             this.IsbnLabel.Name = "IsbnLabel";
-            this.IsbnLabel.Size = new System.Drawing.Size(66, 25);
+            this.IsbnLabel.Size = new System.Drawing.Size(35, 13);
             this.IsbnLabel.TabIndex = 2;
             this.IsbnLabel.Text = "ISBN:";
             // 
             // PriceLabel
             // 
             this.PriceLabel.AutoSize = true;
-            this.PriceLabel.Location = new System.Drawing.Point(750, 231);
-            this.PriceLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.PriceLabel.Location = new System.Drawing.Point(375, 120);
             this.PriceLabel.Name = "PriceLabel";
-            this.PriceLabel.Size = new System.Drawing.Size(67, 25);
+            this.PriceLabel.Size = new System.Drawing.Size(34, 13);
             this.PriceLabel.TabIndex = 3;
             this.PriceLabel.Text = "Price:";
             // 
             // QuantityLabel
             // 
             this.QuantityLabel.AutoSize = true;
-            this.QuantityLabel.Location = new System.Drawing.Point(908, 313);
-            this.QuantityLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.QuantityLabel.Location = new System.Drawing.Point(454, 163);
             this.QuantityLabel.Name = "QuantityLabel";
-            this.QuantityLabel.Size = new System.Drawing.Size(98, 25);
+            this.QuantityLabel.Size = new System.Drawing.Size(49, 13);
             this.QuantityLabel.TabIndex = 4;
             this.QuantityLabel.Text = "Quantity:";
             // 
             // OrderSummaryLabel
             // 
             this.OrderSummaryLabel.AutoSize = true;
-            this.OrderSummaryLabel.Location = new System.Drawing.Point(1028, 477);
-            this.OrderSummaryLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.OrderSummaryLabel.Location = new System.Drawing.Point(514, 248);
             this.OrderSummaryLabel.Name = "OrderSummaryLabel";
-            this.OrderSummaryLabel.Size = new System.Drawing.Size(162, 25);
+            this.OrderSummaryLabel.Size = new System.Drawing.Size(79, 13);
             this.OrderSummaryLabel.TabIndex = 5;
             this.OrderSummaryLabel.Text = "Order Summary";
             // 
             // SubtotalLabel
             // 
             this.SubtotalLabel.AutoSize = true;
-            this.SubtotalLabel.Location = new System.Drawing.Point(322, 848);
-            this.SubtotalLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.SubtotalLabel.Location = new System.Drawing.Point(161, 441);
             this.SubtotalLabel.Name = "SubtotalLabel";
-            this.SubtotalLabel.Size = new System.Drawing.Size(97, 25);
+            this.SubtotalLabel.Size = new System.Drawing.Size(49, 13);
             this.SubtotalLabel.TabIndex = 6;
             this.SubtotalLabel.Text = "Subtotal:";
             // 
             // TaxLabel
             // 
             this.TaxLabel.AutoSize = true;
-            this.TaxLabel.Location = new System.Drawing.Point(914, 848);
-            this.TaxLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.TaxLabel.Location = new System.Drawing.Point(457, 441);
             this.TaxLabel.Name = "TaxLabel";
-            this.TaxLabel.Size = new System.Drawing.Size(54, 25);
+            this.TaxLabel.Size = new System.Drawing.Size(28, 13);
             this.TaxLabel.TabIndex = 7;
             this.TaxLabel.Text = "Tax:";
             // 
             // TotalLabel
             // 
             this.TotalLabel.AutoSize = true;
-            this.TotalLabel.Location = new System.Drawing.Point(1344, 848);
-            this.TotalLabel.Margin = new System.Windows.Forms.Padding(6, 0, 6, 0);
+            this.TotalLabel.Location = new System.Drawing.Point(672, 441);
             this.TotalLabel.Name = "TotalLabel";
-            this.TotalLabel.Size = new System.Drawing.Size(66, 25);
+            this.TotalLabel.Size = new System.Drawing.Size(34, 13);
             this.TotalLabel.TabIndex = 8;
             this.TotalLabel.Text = "Total:";
             // 
             // Subtotal_Text
             // 
-            this.Subtotal_Text.Location = new System.Drawing.Point(434, 833);
-            this.Subtotal_Text.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Subtotal_Text.Location = new System.Drawing.Point(217, 433);
             this.Subtotal_Text.Name = "Subtotal_Text";
-            this.Subtotal_Text.Size = new System.Drawing.Size(196, 31);
+            this.Subtotal_Text.Size = new System.Drawing.Size(100, 20);
             this.Subtotal_Text.TabIndex = 9;
             // 
             // TaxText
             // 
-            this.TaxText.Location = new System.Drawing.Point(984, 848);
-            this.TaxText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TaxText.Location = new System.Drawing.Point(492, 441);
             this.TaxText.Name = "TaxText";
-            this.TaxText.Size = new System.Drawing.Size(196, 31);
+            this.TaxText.Size = new System.Drawing.Size(100, 20);
             this.TaxText.TabIndex = 10;
             // 
             // TotalText
             // 
-            this.TotalText.Location = new System.Drawing.Point(1462, 848);
-            this.TotalText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TotalText.Location = new System.Drawing.Point(731, 441);
             this.TotalText.Name = "TotalText";
-            this.TotalText.Size = new System.Drawing.Size(196, 31);
+            this.TotalText.Size = new System.Drawing.Size(100, 20);
             this.TotalText.TabIndex = 11;
             // 
             // ConfirmOrderButton
             // 
-            this.ConfirmOrderButton.Location = new System.Drawing.Point(722, 979);
-            this.ConfirmOrderButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ConfirmOrderButton.Location = new System.Drawing.Point(361, 509);
             this.ConfirmOrderButton.Name = "ConfirmOrderButton";
-            this.ConfirmOrderButton.Size = new System.Drawing.Size(210, 44);
+            this.ConfirmOrderButton.Size = new System.Drawing.Size(105, 23);
             this.ConfirmOrderButton.TabIndex = 12;
             this.ConfirmOrderButton.Text = "Confirm Order";
             this.ConfirmOrderButton.UseVisualStyleBackColor = true;
             // 
             // CancelOrderButton
             // 
-            this.CancelOrderButton.Location = new System.Drawing.Point(1100, 977);
-            this.CancelOrderButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.CancelOrderButton.Location = new System.Drawing.Point(550, 508);
             this.CancelOrderButton.Name = "CancelOrderButton";
-            this.CancelOrderButton.Size = new System.Drawing.Size(150, 44);
+            this.CancelOrderButton.Size = new System.Drawing.Size(75, 23);
             this.CancelOrderButton.TabIndex = 13;
             this.CancelOrderButton.Text = "Cancel Order";
             this.CancelOrderButton.UseVisualStyleBackColor = true;
             // 
             // AuthorText
             // 
-            this.AuthorText.Location = new System.Drawing.Point(410, 135);
-            this.AuthorText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.AuthorText.Location = new System.Drawing.Point(205, 70);
             this.AuthorText.Name = "AuthorText";
-            this.AuthorText.Size = new System.Drawing.Size(196, 31);
+            this.AuthorText.Size = new System.Drawing.Size(100, 20);
             this.AuthorText.TabIndex = 14;
             // 
             // IsbnText
             // 
-            this.IsbnText.Location = new System.Drawing.Point(1422, 112);
-            this.IsbnText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.IsbnText.Location = new System.Drawing.Point(711, 58);
             this.IsbnText.Name = "IsbnText";
-            this.IsbnText.Size = new System.Drawing.Size(196, 31);
+            this.IsbnText.Size = new System.Drawing.Size(100, 20);
             this.IsbnText.TabIndex = 15;
             // 
             // PriceText
             // 
-            this.PriceText.Location = new System.Drawing.Point(832, 215);
-            this.PriceText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.PriceText.Location = new System.Drawing.Point(416, 112);
             this.PriceText.Name = "PriceText";
-            this.PriceText.Size = new System.Drawing.Size(196, 31);
+            this.PriceText.Size = new System.Drawing.Size(100, 20);
             this.PriceText.TabIndex = 16;
             // 
             // QuantityText
             // 
-            this.QuantityText.Location = new System.Drawing.Point(1020, 313);
-            this.QuantityText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.QuantityText.Location = new System.Drawing.Point(510, 163);
             this.QuantityText.Name = "QuantityText";
-            this.QuantityText.Size = new System.Drawing.Size(196, 31);
+            this.QuantityText.Size = new System.Drawing.Size(100, 20);
             this.QuantityText.TabIndex = 17;
             // 
             // dataGridView1
@@ -230,10 +212,9 @@
             this.Price,
             this.Quantity,
             this.Total});
-            this.dataGridView1.Location = new System.Drawing.Point(722, 565);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dataGridView1.Location = new System.Drawing.Point(361, 294);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(908, 223);
+            this.dataGridView1.Size = new System.Drawing.Size(454, 116);
             this.dataGridView1.TabIndex = 18;
             // 
             // Title
@@ -266,17 +247,19 @@
             this.comboBox1.Items.AddRange(new object[] {
             "Book1",
             "Book2",
-            "book3"});
-            this.comboBox1.Location = new System.Drawing.Point(755, 29);
+            "Book3"});
+            this.comboBox1.Location = new System.Drawing.Point(378, 15);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(2, 2, 2, 2);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(121, 33);
+            this.comboBox1.Size = new System.Drawing.Size(62, 21);
             this.comboBox1.TabIndex = 19;
+            this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
             // Form1
             // 
-            this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
+            this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2328, 1177);
+            this.ClientSize = new System.Drawing.Size(1164, 552);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.QuantityText);
@@ -297,7 +280,6 @@
             this.Controls.Add(this.IsbnLabel);
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.AddTitle);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
             this.Name = "Form1";
             this.Text = "5";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
