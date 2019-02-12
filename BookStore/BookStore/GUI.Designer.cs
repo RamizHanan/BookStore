@@ -58,7 +58,7 @@
             // AddTitle
             // 
             this.AddTitle.Location = new System.Drawing.Point(1061, 365);
-            this.AddTitle.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.AddTitle.Margin = new System.Windows.Forms.Padding(6);
             this.AddTitle.Name = "AddTitle";
             this.AddTitle.Size = new System.Drawing.Size(150, 44);
             this.AddTitle.TabIndex = 0;
@@ -149,7 +149,7 @@
             // Subtotal_Text
             // 
             this.Subtotal_Text.Location = new System.Drawing.Point(434, 833);
-            this.Subtotal_Text.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.Subtotal_Text.Margin = new System.Windows.Forms.Padding(6);
             this.Subtotal_Text.Name = "Subtotal_Text";
             this.Subtotal_Text.Size = new System.Drawing.Size(196, 31);
             this.Subtotal_Text.TabIndex = 9;
@@ -157,7 +157,7 @@
             // TaxText
             // 
             this.TaxText.Location = new System.Drawing.Point(984, 848);
-            this.TaxText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TaxText.Margin = new System.Windows.Forms.Padding(6);
             this.TaxText.Name = "TaxText";
             this.TaxText.Size = new System.Drawing.Size(196, 31);
             this.TaxText.TabIndex = 10;
@@ -165,7 +165,7 @@
             // TotalText
             // 
             this.TotalText.Location = new System.Drawing.Point(1462, 848);
-            this.TotalText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.TotalText.Margin = new System.Windows.Forms.Padding(6);
             this.TotalText.Name = "TotalText";
             this.TotalText.Size = new System.Drawing.Size(196, 31);
             this.TotalText.TabIndex = 11;
@@ -173,7 +173,7 @@
             // ConfirmOrderButton
             // 
             this.ConfirmOrderButton.Location = new System.Drawing.Point(722, 979);
-            this.ConfirmOrderButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.ConfirmOrderButton.Margin = new System.Windows.Forms.Padding(6);
             this.ConfirmOrderButton.Name = "ConfirmOrderButton";
             this.ConfirmOrderButton.Size = new System.Drawing.Size(210, 44);
             this.ConfirmOrderButton.TabIndex = 12;
@@ -183,7 +183,7 @@
             // CancelOrderButton
             // 
             this.CancelOrderButton.Location = new System.Drawing.Point(1100, 977);
-            this.CancelOrderButton.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.CancelOrderButton.Margin = new System.Windows.Forms.Padding(6);
             this.CancelOrderButton.Name = "CancelOrderButton";
             this.CancelOrderButton.Size = new System.Drawing.Size(150, 44);
             this.CancelOrderButton.TabIndex = 13;
@@ -193,7 +193,7 @@
             // AuthorText
             // 
             this.AuthorText.Location = new System.Drawing.Point(410, 135);
-            this.AuthorText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.AuthorText.Margin = new System.Windows.Forms.Padding(6);
             this.AuthorText.Name = "AuthorText";
             this.AuthorText.Size = new System.Drawing.Size(196, 31);
             this.AuthorText.TabIndex = 14;
@@ -201,7 +201,7 @@
             // IsbnText
             // 
             this.IsbnText.Location = new System.Drawing.Point(1422, 112);
-            this.IsbnText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.IsbnText.Margin = new System.Windows.Forms.Padding(6);
             this.IsbnText.Name = "IsbnText";
             this.IsbnText.Size = new System.Drawing.Size(196, 31);
             this.IsbnText.TabIndex = 15;
@@ -209,7 +209,7 @@
             // PriceText
             // 
             this.PriceText.Location = new System.Drawing.Point(823, 203);
-            this.PriceText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.PriceText.Margin = new System.Windows.Forms.Padding(6);
             this.PriceText.Name = "PriceText";
             this.PriceText.Size = new System.Drawing.Size(196, 31);
             this.PriceText.TabIndex = 16;
@@ -217,10 +217,11 @@
             // QuantityText
             // 
             this.QuantityText.Location = new System.Drawing.Point(1011, 301);
-            this.QuantityText.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.QuantityText.Margin = new System.Windows.Forms.Padding(6);
             this.QuantityText.Name = "QuantityText";
             this.QuantityText.Size = new System.Drawing.Size(196, 31);
             this.QuantityText.TabIndex = 17;
+            this.QuantityText.TextChanged += new System.EventHandler(this.QuantityText_TextChanged);
             // 
             // dataGridView1
             // 
@@ -230,11 +231,12 @@
             this.Price,
             this.Quantity,
             this.Total});
-            this.dataGridView1.Location = new System.Drawing.Point(722, 565);
-            this.dataGridView1.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
+            this.dataGridView1.Location = new System.Drawing.Point(604, 565);
+            this.dataGridView1.Margin = new System.Windows.Forms.Padding(6);
             this.dataGridView1.Name = "dataGridView1";
-            this.dataGridView1.Size = new System.Drawing.Size(908, 223);
+            this.dataGridView1.Size = new System.Drawing.Size(1026, 223);
             this.dataGridView1.TabIndex = 18;
+            this.dataGridView1.CellContentClick += new System.Windows.Forms.DataGridViewCellEventHandler(this.dataGridView1_CellContentClick);
             // 
             // Title
             // 
@@ -268,13 +270,13 @@
             "To Kill a Mockingbird",
             "Harry Potter"});
             this.comboBox1.Location = new System.Drawing.Point(620, 29);
-            this.comboBox1.Margin = new System.Windows.Forms.Padding(4, 4, 4, 4);
+            this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
             this.comboBox1.Size = new System.Drawing.Size(312, 33);
             this.comboBox1.TabIndex = 19;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
-            // Form1
+            // GUI
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -299,8 +301,8 @@
             this.Controls.Add(this.IsbnLabel);
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.AddTitle);
-            this.Margin = new System.Windows.Forms.Padding(6, 6, 6, 6);
-            this.Name = "Form1";
+            this.Margin = new System.Windows.Forms.Padding(6);
+            this.Name = "GUI";
             this.Text = "5";
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);

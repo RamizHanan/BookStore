@@ -20,12 +20,19 @@ namespace BookStore
 
         private void AddTitle_Click(object sender, EventArgs e)
         {
+            string SelectedItem = (string)comboBox1.SelectedItem;
+            int Quantity = Int32.Parse(QuantityText.Text);
+            Double TotalCost = Quantity * Convert.ToDouble(PriceText.Text);
+            // Populate the rows.
+            string[] row = new string[] {SelectedItem , "$" + PriceText.Text  , Quantity.ToString(), "$" + TotalCost.ToString()};
+            
+            dataGridView1.Rows.Add(row);
 
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string SelectedItem = (string)comboBox1.SelectedItem;
+            string SelectedItem = (string)comboBox1.SelectedItem; 
             string Book1Name = "The Great Gatsby";
             decimal Book1Price = 20.00m;
             string Book1ISBN = "5632432432";
@@ -70,6 +77,15 @@ namespace BookStore
                 PriceText.Clear();
                 TotalText.Text = "Select a Book to purchase!";
             }
+        }
+
+        private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
+        {
+
+        }
+
+        private void QuantityText_TextChanged(object sender, EventArgs e)
+        {
         }
     }
 }

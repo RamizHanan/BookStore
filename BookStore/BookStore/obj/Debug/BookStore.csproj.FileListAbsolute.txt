@@ -12,7 +12,6 @@ C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\BookS
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\BookStore.exe
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\BookStore.pdb
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csprojAssemblyReference.cache
-C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.Form1.resources
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.Properties.Resources.resources
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.GenerateResource.cache
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CoreCompileInputs.cache
@@ -28,3 +27,4 @@ C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CoreCompileInputs.cache
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.exe
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.pdb
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.GUI.resources

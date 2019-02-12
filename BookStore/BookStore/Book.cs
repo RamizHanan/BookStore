@@ -8,7 +8,7 @@ namespace BookStore
 {
     class Book
     {
-        public const decimal tax = .08m;
+        public const double tax = .08;
         private string book1Name;
         private string book1Author;
         private string book1ISBN;
