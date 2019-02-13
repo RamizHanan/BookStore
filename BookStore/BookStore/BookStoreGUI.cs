@@ -10,39 +10,40 @@ using System.Windows.Forms;
 
 namespace BookStore
 {
-    public partial class GUI : Form
+    public partial class BookStoreGUI : Form
     {
         public const Double tax = .1;
         public Double? Subtotal = 0;
-        public GUI()
+        public BookStoreGUI()
         {
             InitializeComponent();
-            this.AutoSize = true;
-            this.dataGridView1.AllowUserToAddRows = false;
+            this.AutoSize = true; //resize auto
+            this.dataGridView1.AllowUserToAddRows = false; //disable user changes
 
         }
         
         private void AddTitle_Click(object sender, EventArgs e)
         {
-            string SelectedItem = (string)comboBox1.SelectedItem;
+             //get title of book
             try
             {
                 int Quantity;
                 bool Qty = int.TryParse(QuantityText.Text, out Quantity); //grab number input
-                if (Qty && Quantity != 0 && !(Quantity < 0)) //handle exception
+                if (Qty && Quantity != 0 && !(Quantity < 0)) //handle exception 0 and negative numbers
                 {
-                    decimal? TotalCost = Quantity * Convert.ToDecimal(PriceText.Text);//here
-                                                                                    // Populate the rows.
-                    string[] row = new string[] { SelectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + TotalCost.ToString() };
-                    //populate and add row
+                    decimal? TotalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
+                    // Populate the rows.
+                    string SelectedItem = (string)comboBox1.SelectedItem;
+                    string[] row = new string[] { SelectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + TotalCost.ToString() };//populate and add row
+
                     dataGridView1.Rows.Add(row);
-                    Subtotal += Quantity * Convert.ToDouble(PriceText.Text);
+                    Subtotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
                     Subtotal_Text.Text = "$" + Subtotal.ToString();
                     TaxText.Text =(Subtotal * tax).ToString();
                     TotalText.Text = "$" + ((Subtotal * tax) + Subtotal).ToString();
                 }
                 else { MessageBox.Show("Please enter a valid number");
-                    QuantityText.Focus();
+                    QuantityText.Focus();//cursor on field
                 }
             }
             catch {
@@ -50,30 +51,29 @@ namespace BookStore
                 MessageBox.Show("Please select a book from the list.");
             }
         }
-        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
+        private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //event handle when picking an item
         {
             string SelectedItem = (string)comboBox1.SelectedItem;
             string Book1Name = "The Great Gatsby";
             decimal Book1Price = 20.00m;
-            string Book1ISBN = "5632432432";
+            string Book1ISBN = "9780743273565";
             string Book1Author = "F. Scott Fitzgerald";
 
             string Book2Name = "To Kill a Mockingbird";
             decimal Book2Price = 24.95m;
-            string Book2ISBN = "S32432423";
+            string Book2ISBN = "9780446310789";
             string Book2Author = "Harper Lee";
 
             string Book3Name = "Harry Potter";
             decimal Book3Price = 35.00m;
-            string Book3ISBN = "ASD543223";
+            string Book3ISBN = "978059035342";
             string Book3Author = "J.K. Rowling";
 
             Book Book1 = new Book(Book1Name, Book1Author, Book1ISBN, Book1Price);
             Book Book2 = new Book(Book2Name, Book2Author, Book2ISBN, Book2Price);
             Book Book3 = new Book(Book3Name, Book3Author, Book3ISBN, Book3Price);
-            string test = comboBox1.SelectedText;
-            string test2 = e.ToString();
-            if (SelectedItem == "The Great Gatsby")
+            
+            if (SelectedItem == "The Great Gatsby")//match selected object fields
             {
                 AuthorText.Text = Book1.author;
                 IsbnText.Text = Book1.ISBN;
@@ -116,12 +116,12 @@ namespace BookStore
 
         private void ConfirmOrderButton_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count == 0){
+            if (dataGridView1.Rows.Count == 0){//means nothing was added
                 MessageBox.Show("Please add a book to check out.");
             }
             else {
-                dataGridView1.Rows.Clear();
-                ClearTextBoxes();
+                dataGridView1.Rows.Clear(); //clear fields
+                ClearTextBoxes();//clear boxes
                 MessageBox.Show("Your order has been placed!");
             }
         }
@@ -130,7 +130,7 @@ namespace BookStore
         {
             Action<Control.ControlCollection> func = null;
 
-            func = (controls) =>
+            func = (controls) =>//lambda expression
             {
                 foreach (Control control in controls)
                     if (control is TextBox)
@@ -153,6 +153,41 @@ namespace BookStore
             }
             else if (dialogResult == DialogResult.No) { }
             
+        }
+
+        private void BookStoreGUI_Load(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AuthorLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void AuthorText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IsbnText_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void IsbnLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void OrderSummaryLabel_Click(object sender, EventArgs e)
+        {
+
+        }
+
+        private void label1_Click(object sender, EventArgs e)
+        {
+
         }
     }
 }
