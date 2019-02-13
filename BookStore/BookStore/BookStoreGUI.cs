@@ -13,7 +13,7 @@ namespace BookStore
     public partial class BookStoreGUI : Form
     {
         public const Double tax = .1;
-        public Double? Subtotal = 0;
+        public Double? subTotal = 0;
         public BookStoreGUI()
         {
             InitializeComponent();
@@ -31,16 +31,16 @@ namespace BookStore
                 bool Qty = int.TryParse(QuantityText.Text, out Quantity); //grab number input
                 if (Qty && Quantity != 0 && !(Quantity < 0)) //handle exception 0 and negative numbers
                 {
-                    decimal? TotalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
+                    decimal? totalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
                     // Populate the rows.
-                    string SelectedItem = (string)comboBox1.SelectedItem;
-                    string[] row = new string[] { SelectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + TotalCost.ToString() };//populate and add row
+                    string selectedItem = (string)comboBox1.SelectedItem;
+                    string[] row = new string[] { selectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + totalCost.ToString() };//populate and add row
 
                     dataGridView1.Rows.Add(row);
-                    Subtotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
-                    Subtotal_Text.Text = "$" + Subtotal.ToString();
-                    TaxText.Text =(Subtotal * tax).ToString();
-                    TotalText.Text = "$" + ((Subtotal * tax) + Subtotal).ToString();
+                    subTotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
+                    Subtotal_Text.Text = "$" + subTotal.ToString();
+                    TaxText.Text =(subTotal * tax).ToString();
+                    TotalText.Text = "$" + ((subTotal * tax) + subTotal).ToString();
                 }
                 else { MessageBox.Show("Please enter a valid number");
                     QuantityText.Focus();//cursor on field
