@@ -8,17 +8,12 @@ namespace BookStore
 {
     class Book
     {
-        public const double tax = .08;
-        private string book1Name;
-        private string book1Author;
-        private string book1ISBN;
-        private decimal book1Price;
-
         public string author { get; set; }
         public decimal price { get; set; }
         public string ISBN { get; set; }
         public string bookName { get; set; }
 
+        //public constructor
         public Book(string BookName, string Author, string isbn, decimal Price)
         {
             this.author = Author ;
@@ -26,7 +21,7 @@ namespace BookStore
             this.ISBN = isbn;
             this.bookName = BookName;
         }
-
+        //default constructor
         public Book() {
             this.author = null;
             this.price = 0.0m;

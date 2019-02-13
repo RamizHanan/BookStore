@@ -60,7 +60,7 @@
             this.AddTitle.Location = new System.Drawing.Point(1061, 365);
             this.AddTitle.Margin = new System.Windows.Forms.Padding(6);
             this.AddTitle.Name = "AddTitle";
-            this.AddTitle.Size = new System.Drawing.Size(150, 44);
+            this.AddTitle.Size = new System.Drawing.Size(148, 36);
             this.AddTitle.TabIndex = 0;
             this.AddTitle.Text = "Add Title";
             this.AddTitle.UseVisualStyleBackColor = true;
@@ -151,6 +151,7 @@
             this.Subtotal_Text.Location = new System.Drawing.Point(434, 833);
             this.Subtotal_Text.Margin = new System.Windows.Forms.Padding(6);
             this.Subtotal_Text.Name = "Subtotal_Text";
+            this.Subtotal_Text.ReadOnly = true;
             this.Subtotal_Text.Size = new System.Drawing.Size(196, 31);
             this.Subtotal_Text.TabIndex = 9;
             // 
@@ -159,6 +160,7 @@
             this.TaxText.Location = new System.Drawing.Point(984, 848);
             this.TaxText.Margin = new System.Windows.Forms.Padding(6);
             this.TaxText.Name = "TaxText";
+            this.TaxText.ReadOnly = true;
             this.TaxText.Size = new System.Drawing.Size(196, 31);
             this.TaxText.TabIndex = 10;
             // 
@@ -167,8 +169,10 @@
             this.TotalText.Location = new System.Drawing.Point(1462, 848);
             this.TotalText.Margin = new System.Windows.Forms.Padding(6);
             this.TotalText.Name = "TotalText";
-            this.TotalText.Size = new System.Drawing.Size(196, 31);
+            this.TotalText.ReadOnly = true;
+            this.TotalText.Size = new System.Drawing.Size(334, 31);
             this.TotalText.TabIndex = 11;
+            this.TotalText.TextChanged += new System.EventHandler(this.TotalText_TextChanged);
             // 
             // ConfirmOrderButton
             // 
@@ -179,6 +183,7 @@
             this.ConfirmOrderButton.TabIndex = 12;
             this.ConfirmOrderButton.Text = "Confirm Order";
             this.ConfirmOrderButton.UseVisualStyleBackColor = true;
+            this.ConfirmOrderButton.Click += new System.EventHandler(this.ConfirmOrderButton_Click);
             // 
             // CancelOrderButton
             // 
@@ -189,13 +194,15 @@
             this.CancelOrderButton.TabIndex = 13;
             this.CancelOrderButton.Text = "Cancel Order";
             this.CancelOrderButton.UseVisualStyleBackColor = true;
+            this.CancelOrderButton.Click += new System.EventHandler(this.CancelOrderButton_Click);
             // 
             // AuthorText
             // 
             this.AuthorText.Location = new System.Drawing.Point(410, 135);
             this.AuthorText.Margin = new System.Windows.Forms.Padding(6);
             this.AuthorText.Name = "AuthorText";
-            this.AuthorText.Size = new System.Drawing.Size(196, 31);
+            this.AuthorText.ReadOnly = true;
+            this.AuthorText.Size = new System.Drawing.Size(194, 31);
             this.AuthorText.TabIndex = 14;
             // 
             // IsbnText
@@ -203,7 +210,8 @@
             this.IsbnText.Location = new System.Drawing.Point(1422, 112);
             this.IsbnText.Margin = new System.Windows.Forms.Padding(6);
             this.IsbnText.Name = "IsbnText";
-            this.IsbnText.Size = new System.Drawing.Size(196, 31);
+            this.IsbnText.ReadOnly = true;
+            this.IsbnText.Size = new System.Drawing.Size(194, 31);
             this.IsbnText.TabIndex = 15;
             // 
             // PriceText
@@ -211,7 +219,8 @@
             this.PriceText.Location = new System.Drawing.Point(823, 203);
             this.PriceText.Margin = new System.Windows.Forms.Padding(6);
             this.PriceText.Name = "PriceText";
-            this.PriceText.Size = new System.Drawing.Size(196, 31);
+            this.PriceText.ReadOnly = true;
+            this.PriceText.Size = new System.Drawing.Size(194, 31);
             this.PriceText.TabIndex = 16;
             // 
             // QuantityText
@@ -219,19 +228,20 @@
             this.QuantityText.Location = new System.Drawing.Point(1011, 301);
             this.QuantityText.Margin = new System.Windows.Forms.Padding(6);
             this.QuantityText.Name = "QuantityText";
-            this.QuantityText.Size = new System.Drawing.Size(196, 31);
+            this.QuantityText.Size = new System.Drawing.Size(194, 31);
             this.QuantityText.TabIndex = 17;
             this.QuantityText.TextChanged += new System.EventHandler(this.QuantityText_TextChanged);
             // 
             // dataGridView1
             // 
+            this.dataGridView1.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
             this.dataGridView1.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.dataGridView1.Columns.AddRange(new System.Windows.Forms.DataGridViewColumn[] {
             this.Title,
             this.Price,
             this.Quantity,
             this.Total});
-            this.dataGridView1.Location = new System.Drawing.Point(604, 565);
+            this.dataGridView1.Location = new System.Drawing.Point(466, 539);
             this.dataGridView1.Margin = new System.Windows.Forms.Padding(6);
             this.dataGridView1.Name = "dataGridView1";
             this.dataGridView1.Size = new System.Drawing.Size(1026, 223);
@@ -264,15 +274,16 @@
             // 
             // comboBox1
             // 
-            this.comboBox1.FormattingEnabled = true;
+            this.comboBox1.DropDownStyle = System.Windows.Forms.ComboBoxStyle.DropDownList;
             this.comboBox1.Items.AddRange(new object[] {
+            "Harry Potter",
             "The Great Gatsby",
-            "To Kill a Mockingbird",
-            "Harry Potter"});
+            "To Kill a Mockingbird"});
             this.comboBox1.Location = new System.Drawing.Point(620, 29);
             this.comboBox1.Margin = new System.Windows.Forms.Padding(4);
             this.comboBox1.Name = "comboBox1";
-            this.comboBox1.Size = new System.Drawing.Size(312, 33);
+            this.comboBox1.Size = new System.Drawing.Size(310, 33);
+            this.comboBox1.Sorted = true;
             this.comboBox1.TabIndex = 19;
             this.comboBox1.SelectedIndexChanged += new System.EventHandler(this.comboBox1_SelectedIndexChanged);
             // 
@@ -280,7 +291,7 @@
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(12F, 25F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(2328, 1062);
+            this.ClientSize = new System.Drawing.Size(2564, 1062);
             this.Controls.Add(this.comboBox1);
             this.Controls.Add(this.dataGridView1);
             this.Controls.Add(this.QuantityText);
@@ -302,8 +313,10 @@
             this.Controls.Add(this.AuthorLabel);
             this.Controls.Add(this.AddTitle);
             this.Margin = new System.Windows.Forms.Padding(6);
+            this.MinimumSize = new System.Drawing.Size(2558, 1000);
             this.Name = "GUI";
             this.Text = "5";
+            this.WindowState = System.Windows.Forms.FormWindowState.Maximized;
             ((System.ComponentModel.ISupportInitialize)(this.dataGridView1)).EndInit();
             this.ResumeLayout(false);
             this.PerformLayout();
