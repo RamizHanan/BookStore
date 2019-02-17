@@ -26,5 +26,9 @@ C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CoreCompileInputs.cache
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.exe
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.pdb
-C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.GUI.resources
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookStoreGUI.resources
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.dll
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.xml
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookStoreGUI.resources
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CopyComplete

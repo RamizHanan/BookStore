@@ -1,4 +1,5 @@
 ﻿using System;
+using System.IO;
 using System.Collections.Generic;
 using System.ComponentModel;
 using System.Data;
@@ -7,6 +8,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace BookStore
 {
@@ -19,6 +23,25 @@ namespace BookStore
             InitializeComponent();
             this.AutoSize = true; //resize auto
             this.dataGridView1.AllowUserToAddRows = false; //disable user changes
+
+            try
+            {
+                // deserialize JSON directly from a file
+                string BookJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Books.json");
+                JObject json = JObject.Parse(BookJSON);
+                //access books
+                JArray bookList = (JArray)json["Books"];
+                List<string> Books = JsonConvert.DeserializeObject<List<string>>(bookList.ToString());
+                comboBox1.Items.Clear();
+                for (int i = 0; i < Books.Count; i++)
+                {
+                    comboBox1.Items.Add(json[Books[i]]["bookName"].ToString());
+                }
+
+            }
+            catch {
+                TotalText.Text = "Check JSON File/Location";
+            }
 
         }
         
@@ -35,7 +58,7 @@ namespace BookStore
                     // Populate the rows.
                     string selectedItem = (string)comboBox1.SelectedItem;
                     string[] row = new string[] { selectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + totalCost.ToString() };//populate and add row
-
+                   
                     dataGridView1.Rows.Add(row);
                     subTotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
                     Subtotal_Text.Text = "$" + subTotal.ToString();
@@ -54,52 +77,38 @@ namespace BookStore
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //event handle when picking an item
         {
             string SelectedItem = (string)comboBox1.SelectedItem;
-            string Book1Name = "The Great Gatsby";
-            decimal Book1Price = 20.00m;
-            string Book1ISBN = "9780743273565";
-            string Book1Author = "F. Scott Fitzgerald";
-
-            string Book2Name = "To Kill a Mockingbird";
-            decimal Book2Price = 24.95m;
-            string Book2ISBN = "9780446310789";
-            string Book2Author = "Harper Lee";
-
-            string Book3Name = "Harry Potter";
-            decimal Book3Price = 35.00m;
-            string Book3ISBN = "978059035342";
-            string Book3Author = "J.K. Rowling";
-
-            Book Book1 = new Book(Book1Name, Book1Author, Book1ISBN, Book1Price);
-            Book Book2 = new Book(Book2Name, Book2Author, Book2ISBN, Book2Price);
-            Book Book3 = new Book(Book3Name, Book3Author, Book3ISBN, Book3Price);
-            
-            if (SelectedItem == "The Great Gatsby")//match selected object fields
+        
+            try
             {
-                AuthorText.Text = Book1.author;
-                IsbnText.Text = Book1.ISBN;
-                PriceText.Text = Book1.price.ToString();
+                //access books
+                string BookJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Books.json");
+                JObject json = JObject.Parse(BookJSON);
+                
+                JObject BookTarget = (JObject)json[SelectedItem];
+
+                string book_target = BookTarget.ToString();
+
+                Book foundBook = new Book();
+                Newtonsoft.Json.JsonConvert.PopulateObject(book_target, foundBook);
+                AuthorText.Text = foundBook.author; ;
+                IsbnText.Text = foundBook.ISBN;
+                PriceText.Text = foundBook.price.ToString();
+                
             }
-            else if (SelectedItem == "To Kill a Mockingbird")
-            {
-                AuthorText.Text = Book2.author;
-                IsbnText.Text = Book2.ISBN;
-                PriceText.Text = Book2.price.ToString();
-            }
-            else if (SelectedItem == "Harry Potter")
-            {
-                AuthorText.Text = Book3.author;
-                IsbnText.Text = Book3.ISBN;
-                PriceText.Text = Book3.price.ToString();
-            }
-            else {
+            catch {
                 AuthorText.Clear();
                 IsbnText.Clear();
                 PriceText.Clear();
-                TotalText.Text = "Select a Book to purchase!";
             }
+
             QuantityText.Focus();
         }
 
+        public void SaveToTxt(string receipt) {
+
+            //write string to file
+            System.IO.File.WriteAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Order.txt", receipt);
+        }
         private void dataGridView1_CellContentClick(object sender, DataGridViewCellEventArgs e)
         {
 
@@ -116,18 +125,41 @@ namespace BookStore
 
         private void ConfirmOrderButton_Click(object sender, EventArgs e)
         {
-            if (dataGridView1.Rows.Count == 0){//means nothing was added
+            if (dataGridView1.Rows.Count == 0)
+            {//means nothing was added
                 MessageBox.Show("Please add a book to check out.");
             }
-            else {
+            else
+            {
+                Dictionary<string, string> order = new Dictionary<string, string>();
+                string itemDesc = "";
+                for (int i = 0; i < dataGridView1.Rows.Count; i++)
+                {
+                    string key = "Item " + (i+1).ToString();
+                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                    {
+                        string columnName = dataGridView1.Columns[j].Name + ": ";
+                        itemDesc += columnName + dataGridView1[j, i].Value.ToString() + "    ";
+                    }
+                    order.Add(key, itemDesc);
+                    itemDesc = "";
+                }
+
+                string totalItems = "Subtotal: " + Subtotal_Text.Text + "   Tax: 10.00%" + "   Tax Total: " + TaxText.Text + "   Total: " + TotalText.Text;
+                order.Add("Order Total", totalItems);
+                string dateTimeString = $"{DateTime.Today.ToString("d")} {DateTime.Now.ToString("HH:mm:ss")}";
+                order.Add("Transaction Completed", dateTimeString);
+                string receipt = JsonConvert.SerializeObject(order,Formatting.Indented);
+                SaveToTxt(receipt);
                 dataGridView1.Rows.Clear(); //clear fields
                 ClearTextBoxes();//clear boxes
-                MessageBox.Show("Your order has been placed!");
+                MessageBox.Show("Thank you! Your order has been placed!");
             }
         }
 
         private void ClearTextBoxes() //Found on stack overflow
         {
+            comboBox1.SelectedIndex = -1;
             Action<Control.ControlCollection> func = null;
 
             func = (controls) =>//lambda expression
