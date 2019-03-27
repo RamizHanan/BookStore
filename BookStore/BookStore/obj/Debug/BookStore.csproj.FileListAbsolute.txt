@@ -32,3 +32,4 @@ C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newto
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.xml
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookStoreGUI.resources
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CopyComplete
+C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.CustomerPortal.resources

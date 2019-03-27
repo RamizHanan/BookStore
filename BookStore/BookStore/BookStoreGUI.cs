@@ -24,6 +24,7 @@ namespace BookStore
             this.AutoSize = true; //resize auto
             this.dataGridView1.AllowUserToAddRows = false; //disable user changes
 
+
             try
             {
                 // deserialize JSON directly from a file
@@ -31,6 +32,7 @@ namespace BookStore
                 JObject json = JObject.Parse(BookJSON);
                 //access books
                 JArray bookList = (JArray)json["Books"];
+                //made list of only book names for the combobox. See JSON File
                 List<string> Books = JsonConvert.DeserializeObject<List<string>>(bookList.ToString());
                 comboBox1.Items.Clear();
                 for (int i = 0; i < Books.Count; i++)
@@ -58,7 +60,7 @@ namespace BookStore
                     // Populate the rows.
                     string selectedItem = (string)comboBox1.SelectedItem;
                     string[] row = new string[] { selectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + totalCost.ToString() };//populate and add row
-                   
+                   //populate dataGridView upon click Add Title
                     dataGridView1.Rows.Add(row);
                     subTotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
                     Subtotal_Text.Text = "$" + subTotal.ToString();
@@ -96,6 +98,7 @@ namespace BookStore
                 
             }
             catch {
+                //clear form
                 AuthorText.Clear();
                 IsbnText.Clear();
                 PriceText.Clear();
@@ -130,7 +133,7 @@ namespace BookStore
                 MessageBox.Show("Please add a book to check out.");
             }
             else
-            {
+            {//populate receipt
                 Dictionary<string, string> order = new Dictionary<string, string>();
                 string itemDesc = "";
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
@@ -144,7 +147,7 @@ namespace BookStore
                     order.Add(key, itemDesc);
                     itemDesc = "";
                 }
-
+                //format receipt txt file
                 string totalItems = "Subtotal: " + Subtotal_Text.Text + "   Tax: 10.00%" + "   Tax Total: " + TaxText.Text + "   Total: " + TotalText.Text;
                 order.Add("Order Total", totalItems);
                 string dateTimeString = $"{DateTime.Today.ToString("d")} {DateTime.Now.ToString("HH:mm:ss")}";
