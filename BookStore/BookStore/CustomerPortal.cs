@@ -25,12 +25,15 @@ namespace BookStore
         public string SelectedItem;
         public string tempfirst;
         public string templast;
+        int newCustomerRequested = 0;
         public CustomerPortal()
         {
             InitializeComponent();
             try
             {
                 populateComboBox();
+                this.comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
+
             }
             catch
             {
@@ -102,7 +105,7 @@ namespace BookStore
             {
                 custo = null;
 
-                MessageBox.Show("Please enter a valid zip code", "Zip is a required field");
+                MessageBox.Show("Please enter a valid 5 digit zip code", "Zip is a required field");
                 zipTextBox.Focus();
             }
             else if (emailTextBox.Text == "" || Regex.IsMatch(emailTextBox.Text, email))
@@ -192,6 +195,7 @@ namespace BookStore
 
                 //**Write customer Successfully Added**
                 statusTextBox.Text = "SUCCESS - CUSTOMER ADDED";
+                newCustomerRequested = 0;
                 
             }
             //If customer already exists
@@ -257,7 +261,9 @@ namespace BookStore
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            System.Windows.Forms.Application.ExitThread();
+            this.comboBox.Enabled = true;
+            newCustomerRequested = 0;
+            ClearTextBoxes();
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -269,83 +275,116 @@ namespace BookStore
 
         private void newCustomerButton_Click(object sender, EventArgs e)
         {
-            AddCustomer(firstTextBox.Text + " " + lastTextBox.Text);
-            
+            this.comboBox.Enabled= false;
+            newCustomerRequested = 1;
+            ClearTextBoxes();
+
         }
 
+        private void ClearTextBoxes() //Found on stack overflow
+        {
+            comboBox.SelectedIndex = -1;
+            Action<Control.ControlCollection> func = null;
+
+            func = (controls) =>//lambda expression
+            {
+                foreach (Control control in controls)
+                    if (control is TextBox)
+                        (control as TextBox).Clear();
+                    else
+                        func(control.Controls);
+            };
+
+            func(Controls);
+        }
         private void SaveButton_Click(object sender, EventArgs e)
         {
-
-            if (firstTextBox.Text == "" || Regex.IsMatch(firstTextBox.Text, name))
-            {
-
-                MessageBox.Show("Please Enter First Name", "First Name is a required field");
-                firstTextBox.Focus();
-            }
-            else if (lastTextBox.Text == "" || Regex.IsMatch(lastTextBox.Text, name))
-            {
-
-                MessageBox.Show("Please Enter Last Name", "Last name is a required field");
-                firstTextBox.Focus();
-            }
-            else if (PhoneTextBox.Text == "" || Regex.IsMatch(PhoneTextBox.Text, phone))
-            {
-
-                MessageBox.Show("Please Enter Phone Number", "First Name is a required field");
-                firstTextBox.Focus();
-            }
-            else if (addressTextBox.Text == "" || Regex.IsMatch(addressTextBox.Text, zip))
-            {
-                MessageBox.Show("Please Enter Address", "Address is a required field");
-                addressTextBox.Focus();
-            }
-            else if (stateTextBox.Text == "" || Regex.IsMatch(stateTextBox.Text, name))
-            {
-
-                MessageBox.Show("Please Enter State", "State is a required field");
-                stateTextBox.Focus();
-            }
-            else if (cityTextBox.Text == "")
-            {
-
-                MessageBox.Show("Please Enter city", "city is a required field");
-                cityTextBox.Focus();
-            }
-            else if (zipTextBox.Text == "")
-            {
-
-                MessageBox.Show("Please Enter Zip", "Zip is a required field");
-                zipTextBox.Focus();
-            }
-            else if (emailTextBox.Text == "" || Regex.IsMatch(emailTextBox.Text, email))
-            {
-                MessageBox.Show("Please Enter Email", "Email is a required field");
-                emailTextBox.Focus();
-            }
-            else
-            {
-                if(SelectedItem is null) {
-                    MessageBox.Show("Please select customer from list", "Save Error");
-                    return;
-                        }
-                string custoJSON = File.ReadAllText(path);
-                JObject json = JObject.Parse(custoJSON);
-                json[SelectedItem]["address"] = addressTextBox.Text;
-                json[SelectedItem]["city"] = cityTextBox.Text;
-                json[SelectedItem]["state"] = stateTextBox.Text;
-                json[SelectedItem]["zip"] = zipTextBox.Text;
-                json[SelectedItem]["phone"] = PhoneTextBox.Text;
-                json[SelectedItem]["email"] = emailTextBox.Text;
-                if (tempfirst != firstTextBox.Text.ToString() || templast != lastTextBox.Text.ToString()) { 
-                    MessageBox.Show("Cannot update first or last name, please create new customer", "Overwrite Error");
-                    firstTextBox.Text = tempfirst;
-                    lastTextBox.Text = templast;
-                    return;
-                }
-                File.WriteAllText(path, json.ToString());
+            if (newCustomerRequested == 1) {
+                this.comboBox.Enabled = false;
+                AddCustomer(firstTextBox.Text + " " + lastTextBox.Text);
                 populateComboBox();
-                statusTextBox.Text = "Updated";
+
             }
+            else if(newCustomerRequested == 0){
+                this.comboBox.Enabled = true;
+
+                if (firstTextBox.Text == "" || Regex.IsMatch(firstTextBox.Text, name))
+                {
+
+                    MessageBox.Show("Please Enter First Name", "First Name is a required field");
+                    firstTextBox.Focus();
+                }
+                else if (lastTextBox.Text == "" || Regex.IsMatch(lastTextBox.Text, name))
+                {
+
+                    MessageBox.Show("Please Enter Last Name", "Last name is a required field");
+                    firstTextBox.Focus();
+                }
+                else if (PhoneTextBox.Text == "" || Regex.IsMatch(PhoneTextBox.Text, phone))
+                {
+
+                    MessageBox.Show("Please Enter Phone Number", "First Name is a required field");
+                    firstTextBox.Focus();
+                }
+                else if (addressTextBox.Text == "" || Regex.IsMatch(addressTextBox.Text, zip))
+                {
+                    MessageBox.Show("Please Enter Address", "Address is a required field");
+                    addressTextBox.Focus();
+                }
+                else if (stateTextBox.Text == "" || Regex.IsMatch(stateTextBox.Text, name))
+                {
+
+                    MessageBox.Show("Please Enter State", "State is a required field");
+                    stateTextBox.Focus();
+                }
+                else if (cityTextBox.Text == "")
+                {
+
+                    MessageBox.Show("Please Enter city", "city is a required field");
+                    cityTextBox.Focus();
+                }
+                else if (zipTextBox.Text == "")
+                {
+
+                    MessageBox.Show("Please Enter Zip", "Zip is a required field");
+                    zipTextBox.Focus();
+                }
+                else if (emailTextBox.Text == "" || Regex.IsMatch(emailTextBox.Text, email))
+                {
+                    MessageBox.Show("Please Enter Email", "Email is a required field");
+                    emailTextBox.Focus();
+                }
+                else
+                {
+
+                    if (SelectedItem is null)
+                    {
+                        MessageBox.Show("Please select customer from list", "Save Error");
+                        return;
+                    }
+                    string custoJSON = File.ReadAllText(path);
+                    JObject json = JObject.Parse(custoJSON);
+                    json[SelectedItem]["address"] = addressTextBox.Text;
+                    json[SelectedItem]["city"] = cityTextBox.Text;
+                    json[SelectedItem]["state"] = stateTextBox.Text;
+                    json[SelectedItem]["zip"] = zipTextBox.Text;
+                    json[SelectedItem]["phone"] = PhoneTextBox.Text;
+                    json[SelectedItem]["email"] = emailTextBox.Text;
+                    if (tempfirst != firstTextBox.Text.ToString() || templast != lastTextBox.Text.ToString())
+                    {
+                        MessageBox.Show("Cannot update first or last name, please create new customer", "Overwrite Error");
+                        firstTextBox.Text = tempfirst;
+                        lastTextBox.Text = templast;
+                        return;
+                    }
+                    File.WriteAllText(path, json.ToString());
+                    populateComboBox();
+                    ClearTextBoxes();
+
+                    statusTextBox.Text = "Customer Info Updated Successfully";
+                }
+            }
+            this.comboBox.Enabled = true;
         }
         private void label1_Click(object sender, EventArgs e)
         {

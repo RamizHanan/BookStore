@@ -67,7 +67,7 @@ namespace BookStore
             // 
             // cancelButton
             // 
-            this.cancelButton.Location = new System.Drawing.Point(1005, 304);
+            this.cancelButton.Location = new System.Drawing.Point(1005, 274);
             this.cancelButton.Name = "cancelButton";
             this.cancelButton.Size = new System.Drawing.Size(123, 41);
             this.cancelButton.TabIndex = 1;
@@ -256,7 +256,7 @@ namespace BookStore
             this.statusTextBox.Location = new System.Drawing.Point(630, 401);
             this.statusTextBox.Name = "statusTextBox";
             this.statusTextBox.ReadOnly = true;
-            this.statusTextBox.Size = new System.Drawing.Size(305, 29);
+            this.statusTextBox.Size = new System.Drawing.Size(498, 29);
             this.statusTextBox.TabIndex = 23;
             this.statusTextBox.TextChanged += new System.EventHandler(this.statusTextBox_TextChanged);
             // 
