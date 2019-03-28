@@ -22,32 +22,35 @@ namespace BookStore
         string zip = @"^\d{5}(?:[-\s]\d{4})?$";
         public List<string> customerNames = new List<string>();
         public string path = @"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Customers.json";
-
-
+        public string SelectedItem;
+        public string tempfirst;
+        public string templast;
         public CustomerPortal()
         {
             InitializeComponent();
             try
             {
-
-                // deserialize JSON directly from a file
-                string customerJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Customers.json");
-                JObject json = JObject.Parse(customerJSON);
-                //access books
-                JArray custoList = (JArray)json["Customer"];
-                //made list of only book names for the combobox. See JSON File
-                List<string> Customers = JsonConvert.DeserializeObject<List<string>>(custoList.ToString());
-                comboBox.Items.Clear();
-                for (int i = 0; i < Customers.Count; i++)
-                {
-                    comboBox.Items.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
-                    customerNames.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
-                }
-
+                populateComboBox();
             }
             catch
             {
                 statusTextBox.Text = "Check JSON File/Location";
+            }
+        }
+        private void populateComboBox() {
+            // deserialize JSON directly from a file
+            string customerJSON = File.ReadAllText(path);
+            JObject json = JObject.Parse(customerJSON);
+            //access books
+            JArray custoList = (JArray)json["Customer"];
+            //made list of only book names for the combobox. See JSON File
+            List<string> Customers = JsonConvert.DeserializeObject<List<string>>(custoList.ToString());
+            comboBox.Items.Clear();
+            customerNames.Clear();
+            for (int i = 0; i < Customers.Count; i++)
+            {
+                comboBox.Items.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
+                customerNames.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
             }
         }
         private Customer CreateCustomer()
@@ -64,47 +67,47 @@ namespace BookStore
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter Last Name", "Last name is a required field");
+                MessageBox.Show("Please Enter valid Last Name", "Last name is a required field");
                 firstTextBox.Focus();
             }
             else if (PhoneTextBox.Text == "" || Regex.IsMatch(PhoneTextBox.Text, phone))
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter Phone Number", "First Name is a required field");
+                MessageBox.Show("Please Enter valid 10 digit Phone Number e.g: xxxxxxxxxx", "First Name is a required field");
                 firstTextBox.Focus();
             }
             else if (addressTextBox.Text == "" || Regex.IsMatch(addressTextBox.Text, zip))
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter Address", "Address is a required field");
+                MessageBox.Show("Please Enter Valid Address", "Address is a required field");
                 addressTextBox.Focus();
             }
             else if (stateTextBox.Text == "" || Regex.IsMatch(stateTextBox.Text, name))
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter State", "State is a required field");
+                MessageBox.Show("Please enter Valid State", "State is a required field");
                 stateTextBox.Focus();
             }
             else if (cityTextBox.Text == "")
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter city", "city is a required field");
+                MessageBox.Show("Please enter valid city", "city is a required field");
                 cityTextBox.Focus();
             }
             else if (zipTextBox.Text == "" )
             {
                 custo = null;
 
-                MessageBox.Show("Please Enter Zip", "Zip is a required field");
+                MessageBox.Show("Please enter a valid zip code", "Zip is a required field");
                 zipTextBox.Focus();
             }
             else if (emailTextBox.Text == "" || Regex.IsMatch(emailTextBox.Text, email))
             {
-                MessageBox.Show("Please Enter Email", "Email is a required field");
+                MessageBox.Show("Please enter a valid Email", "Email is a required field");
                 custo = null;
                 emailTextBox.Focus();
             }
@@ -210,12 +213,11 @@ namespace BookStore
         }
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
-            string SelectedItem = (string)comboBox.SelectedItem;
-
+            SelectedItem = (string)comboBox.SelectedItem;
             try
             {
                 //access books
-                string BookJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Customers.json");
+                string BookJSON = File.ReadAllText(path);
                 JObject json = JObject.Parse(BookJSON);
 
                 JObject CustoTarget = (JObject)json[SelectedItem];
@@ -232,6 +234,10 @@ namespace BookStore
                 zipTextBox.Text = foundCusto.zip;
                 PhoneTextBox.Text = foundCusto.phone;
                 emailTextBox.Text = foundCusto.email;
+
+                tempfirst = foundCusto.first;
+                templast = foundCusto.last;
+
             }
             catch
             {
@@ -251,7 +257,7 @@ namespace BookStore
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-
+            System.Windows.Forms.Application.ExitThread();
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -270,8 +276,77 @@ namespace BookStore
         private void SaveButton_Click(object sender, EventArgs e)
         {
 
-        }
+            if (firstTextBox.Text == "" || Regex.IsMatch(firstTextBox.Text, name))
+            {
 
+                MessageBox.Show("Please Enter First Name", "First Name is a required field");
+                firstTextBox.Focus();
+            }
+            else if (lastTextBox.Text == "" || Regex.IsMatch(lastTextBox.Text, name))
+            {
+
+                MessageBox.Show("Please Enter Last Name", "Last name is a required field");
+                firstTextBox.Focus();
+            }
+            else if (PhoneTextBox.Text == "" || Regex.IsMatch(PhoneTextBox.Text, phone))
+            {
+
+                MessageBox.Show("Please Enter Phone Number", "First Name is a required field");
+                firstTextBox.Focus();
+            }
+            else if (addressTextBox.Text == "" || Regex.IsMatch(addressTextBox.Text, zip))
+            {
+                MessageBox.Show("Please Enter Address", "Address is a required field");
+                addressTextBox.Focus();
+            }
+            else if (stateTextBox.Text == "" || Regex.IsMatch(stateTextBox.Text, name))
+            {
+
+                MessageBox.Show("Please Enter State", "State is a required field");
+                stateTextBox.Focus();
+            }
+            else if (cityTextBox.Text == "")
+            {
+
+                MessageBox.Show("Please Enter city", "city is a required field");
+                cityTextBox.Focus();
+            }
+            else if (zipTextBox.Text == "")
+            {
+
+                MessageBox.Show("Please Enter Zip", "Zip is a required field");
+                zipTextBox.Focus();
+            }
+            else if (emailTextBox.Text == "" || Regex.IsMatch(emailTextBox.Text, email))
+            {
+                MessageBox.Show("Please Enter Email", "Email is a required field");
+                emailTextBox.Focus();
+            }
+            else
+            {
+                if(SelectedItem is null) {
+                    MessageBox.Show("Please select customer from list", "Save Error");
+                    return;
+                        }
+                string custoJSON = File.ReadAllText(path);
+                JObject json = JObject.Parse(custoJSON);
+                json[SelectedItem]["address"] = addressTextBox.Text;
+                json[SelectedItem]["city"] = cityTextBox.Text;
+                json[SelectedItem]["state"] = stateTextBox.Text;
+                json[SelectedItem]["zip"] = zipTextBox.Text;
+                json[SelectedItem]["phone"] = PhoneTextBox.Text;
+                json[SelectedItem]["email"] = emailTextBox.Text;
+                if (tempfirst != firstTextBox.Text.ToString() || templast != lastTextBox.Text.ToString()) { 
+                    MessageBox.Show("Cannot update first or last name, please create new customer", "Overwrite Error");
+                    firstTextBox.Text = tempfirst;
+                    lastTextBox.Text = templast;
+                    return;
+                }
+                File.WriteAllText(path, json.ToString());
+                populateComboBox();
+                statusTextBox.Text = "Updated";
+            }
+        }
         private void label1_Click(object sender, EventArgs e)
         {
 
