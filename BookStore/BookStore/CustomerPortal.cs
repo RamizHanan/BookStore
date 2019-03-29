@@ -22,10 +22,10 @@ namespace BookStore
         string zip = @"^\d{5}(?:[-\s]\d{4})?$";
         public List<string> customerNames = new List<string>();
         public string path = @"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Customers.json";
-        public string SelectedItem;
-        public string tempfirst;
-        public string templast;
-        int newCustomerRequested = 0;
+        public string SelectedItem; //keeps track of selected item from list
+        public string tempfirst; //used to detect if first name being changed
+        public string templast;//used to detect if last name being changed
+        int newCustomerRequested = 0; //keeps track of new customer mode (1) or update mode (0)
         public CustomerPortal()
         {
             InitializeComponent();
@@ -33,7 +33,6 @@ namespace BookStore
             {
                 populateComboBox();
                 this.comboBox.DropDownStyle = ComboBoxStyle.DropDownList;
-
             }
             catch
             {
@@ -50,7 +49,7 @@ namespace BookStore
             List<string> Customers = JsonConvert.DeserializeObject<List<string>>(custoList.ToString());
             comboBox.Items.Clear();
             customerNames.Clear();
-            for (int i = 0; i < Customers.Count; i++)
+            for (int i = 0; i < Customers.Count; i++) //populate the list
             {
                 comboBox.Items.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
                 customerNames.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
@@ -64,7 +63,7 @@ namespace BookStore
                 custo = null;
 
                 MessageBox.Show("Please Enter First Name", "First Name is a required field");
-            firstTextBox.Focus();
+                firstTextBox.Focus();
             }
             else if (lastTextBox.Text == "" || Regex.IsMatch(lastTextBox.Text, name))
             {
@@ -130,7 +129,7 @@ namespace BookStore
             return custo;
         }
 
-        void WriteToJSON(string newCustomer)
+        void WriteToJSON(string newCustomer) //creates structure of JSON manually
         {
             string newFile = File.ReadAllText(path);
             if (newFile == "")
@@ -148,7 +147,7 @@ namespace BookStore
 
 
         }
-        private int checkIfCustoExists(string custoName) {
+        private int checkIfCustoExists(string custoName) { //simple function to check if current customer is in loaded list
             int result = 1;
             foreach (var name in customerNames) {
                 if (name == custoName)
@@ -169,6 +168,7 @@ namespace BookStore
                 if (newCustomer is null) {
                     return;
                 }
+
                 string custoJSON = File.ReadAllText(path);
                 JObject json = JObject.Parse(custoJSON);
                 //access employees
@@ -176,11 +176,8 @@ namespace BookStore
                 //add customer name to list
                 custoList.Add(custoName);
 
-                
-                    // Create a file to write to.
-                    File.WriteAllText(path, json.ToString());
-                
-                
+                // Create a file to write to.
+                File.WriteAllText(path, json.ToString());
 
                 string temp = json.ToString();
 
@@ -192,11 +189,9 @@ namespace BookStore
                 //**Write Employee Successfully Added**
                 statusTextBox.Text = "SUCCESS - EMPLOYEE ADDED";
 
-
                 //**Write customer Successfully Added**
                 statusTextBox.Text = "SUCCESS - CUSTOMER ADDED";
                 newCustomerRequested = 0;
-                
             }
             //If customer already exists
             else
@@ -210,7 +205,6 @@ namespace BookStore
                 {
                     { username, newCustomer }
                 };
-
 
             //Make JSON string from dictionary
             return JsonConvert.SerializeObject(tempCustomer, Formatting.Indented);
