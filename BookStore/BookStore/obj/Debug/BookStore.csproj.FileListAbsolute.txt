@@ -33,3 +33,13 @@ C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newto
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookStoreGUI.resources
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CopyComplete
 C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.CustomerPortal.resources
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Google.Protobuf.dll
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\MySql.Data.dll
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.dll
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Google.Protobuf.xml
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\MySql.Data.xml
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.pdb
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft.Json.xml
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookManager.resources
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.CustomerPortal.resources
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CopyComplete

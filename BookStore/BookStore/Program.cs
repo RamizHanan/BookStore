@@ -19,7 +19,8 @@ namespace BookStore
             Application.EnableVisualStyles();
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new BookStoreGUI());
-            Application.Run(new CustomerPortal());
+            //Application.Run(new CustomerPortal());
+            Application.Run(new BookManager());
 
 
 
