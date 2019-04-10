@@ -262,7 +262,7 @@ namespace BookStore
 
         private void backButton_Click(object sender, EventArgs e)
         {
-            BookStoreGUI store = new BookStoreGUI();
+            MainMenu store = new MainMenu();
             store.Show();
             Hide();
         }

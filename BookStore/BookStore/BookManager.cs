@@ -200,9 +200,23 @@ namespace BookStore
 
         private void buttonCancel_Click(object sender, EventArgs e)
         {
-            this.comboBox1.Enabled = true;
-            newBookRequested = 0;
-            ClearTextBoxes();
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel adding new book?", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                this.comboBox1.Enabled = true;
+                newBookRequested = 0;
+                ClearTextBoxes();
+                MessageBox.Show("Your request has been cancelled.");
+            }
+            else if (dialogResult == DialogResult.No) { }
+            
+        }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            MainMenu store = new MainMenu();
+            store.Show();
+            Hide();
         }
     }
 }

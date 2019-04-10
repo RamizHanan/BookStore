@@ -224,5 +224,12 @@ namespace BookStore
         {
 
         }
+
+        private void buttonBack_Click(object sender, EventArgs e)
+        {
+            MainMenu store = new MainMenu();
+            store.Show();
+            Hide();
+        }
     }
 }

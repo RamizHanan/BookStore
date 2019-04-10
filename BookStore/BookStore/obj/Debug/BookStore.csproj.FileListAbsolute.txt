@@ -43,3 +43,4 @@ C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Newtonsoft
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.BookManager.resources
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.CustomerPortal.resources
 C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.csproj.CopyComplete
+C:\Users\RMB\Documents\GitHub\BookStore\BookStore\BookStore\obj\Debug\BookStore.MainMenu.resources

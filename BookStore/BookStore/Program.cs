@@ -20,7 +20,8 @@ namespace BookStore
             Application.SetCompatibleTextRenderingDefault(false);
             //Application.Run(new BookStoreGUI());
             //Application.Run(new CustomerPortal());
-            Application.Run(new BookManager());
+            //Application.Run(new BookManager());
+            Application.Run(new MainMenu());
 
 
 
