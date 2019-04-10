@@ -11,7 +11,7 @@ using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
 using System.Text.RegularExpressions;
-
+using MySql.Data.MySqlClient;
 namespace BookStore
 {
     public partial class CustomerPortal : Form
@@ -26,6 +26,11 @@ namespace BookStore
         public string tempfirst; //used to detect if first name being changed
         public string templast;//used to detect if last name being changed
         int newCustomerRequested = 0; //keeps track of new customer mode (1) or update mode (0)
+
+        MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+        
+
+
         public CustomerPortal()
         {
             InitializeComponent();
@@ -40,20 +45,18 @@ namespace BookStore
             }
         }
         private void populateComboBox() {
-            // deserialize JSON directly from a file
-            string customerJSON = File.ReadAllText(path);
-            JObject json = JObject.Parse(customerJSON);
-            //access books
-            JArray custoList = (JArray)json["Customer"];
-            //made list of only book names for the combobox. See JSON File
-            List<string> Customers = JsonConvert.DeserializeObject<List<string>>(custoList.ToString());
+            MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+
+            string selectedQuery = "SELECT * FROM bookstore.customers";
+            connection.Open();
+            MySqlCommand command = new MySqlCommand(selectedQuery, connection);
+            MySqlDataReader reader = command.ExecuteReader();
             comboBox.Items.Clear();
-            customerNames.Clear();
-            for (int i = 0; i < Customers.Count; i++) //populate the list
+            while (reader.Read())
             {
-                comboBox.Items.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
-                customerNames.Add(json[Customers[i]]["first"].ToString() + " " + json[Customers[i]]["last"].ToString());
+                comboBox.Items.Add(reader.GetString("first") + " " + reader.GetString("last"));
             }
+            connection.Close();
         }
         private Customer CreateCustomer()
         {
@@ -155,90 +158,101 @@ namespace BookStore
             }
             return result;
         }
-        
-        void AddCustomer(string custoName) //custoName = first + last
+        private int countFinder()
         {
-            Customer newCustomer = new Customer();
-            
-            //If employee exists
-            if (checkIfCustoExists(custoName)==1)
+            MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+            connection.Open();
+            string command = $"SELECT COUNT(*) FROM bookstore.customers WHERE first = '{firstTextBox.Text}' AND last = '{lastTextBox.Text}'";
+            MySqlCommand counter = new MySqlCommand(command, connection);
+            int records = Convert.ToInt32((counter.ExecuteScalar()));
+
+            connection.Close();
+
+            //SELECT COUNT(*) FROM bookstore.books WHERE title LIKE %'African'
+            return records;
+        }
+        void AddCustomer() //custoName = first + last
+        {
+            try
             {
 
-                newCustomer = CreateCustomer();
-                if (newCustomer is null) {
-                    return;
-                }
+                MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
 
-                string custoJSON = File.ReadAllText(path);
-                JObject json = JObject.Parse(custoJSON);
-                //access employees
-                JArray custoList = (JArray)json["Customer"];
-                //add customer name to list
-                custoList.Add(custoName);
-
-                // Create a file to write to.
-                File.WriteAllText(path, json.ToString());
-
-                string temp = json.ToString();
-
-                //Make JSON string from dictionary
-                string newCustomerJSON = CreateCustomerJSON(custoName, newCustomer);
-                //Write to employee JSON
-                WriteToJSON(newCustomerJSON);
-
-                //**Write Employee Successfully Added**
-                statusTextBox.Text = "SUCCESS - EMPLOYEE ADDED";
-
-                //**Write customer Successfully Added**
-                statusTextBox.Text = "SUCCESS - CUSTOMER ADDED";
-                newCustomerRequested = 0;
-            }
-            //If customer already exists
-            else
-                statusTextBox.Text = "ERROR - CUSTOMER ALREADY EXISTS";
-        }
-
-        string CreateCustomerJSON(string username, Customer newCustomer)
-        {
-            //Create employee dictionary
-            Dictionary<string, Customer> tempCustomer = new Dictionary<string, Customer>
+                int records = countFinder();
+                if (records == 0)
                 {
-                    { username, newCustomer }
-                };
+                    connection.Open();
+                    string sql = $"INSERT IGNORE INTO bookstore.customers (first, last, address, city, state, zip, phone, email) VALUES ('{firstTextBox.Text}','{lastTextBox.Text}','{addressTextBox.Text}','{cityTextBox.Text}','{stateTextBox.Text}','{zipTextBox.Text}', '{PhoneTextBox.Text}','{emailTextBox.Text}')";
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                    cmd.ExecuteNonQuery();
+                    MessageBox.Show("Customer successfully Created.");
+                    ClearTextBoxes();
+                    comboBox.Text = "Select customer from list to edit...";
+                    comboBox.Enabled = true;
+                    populateComboBox();
+                }
+                else
+                {
+                    MessageBox.Show("Customer already exists. Please select from combo box.");
+                    ClearTextBoxes();
+                    comboBox.Enabled = true;
 
-            //Make JSON string from dictionary
-            return JsonConvert.SerializeObject(tempCustomer, Formatting.Indented);
+                }
+            }
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
+            }
+            finally
+            {
+                connection.Close();
+            }
         }
+
+        //string CreateCustomerJSON(string username, Customer newCustomer)
+        //{
+        //    //Create employee dictionary
+        //    Dictionary<string, Customer> tempCustomer = new Dictionary<string, Customer>
+        //        {
+        //            { username, newCustomer }
+        //        };
+
+        //    //Make JSON string from dictionary
+        //    return JsonConvert.SerializeObject(tempCustomer, Formatting.Indented);
+        //}
         private void ComboBox_SelectedIndexChanged(object sender, EventArgs e)
         {
             SelectedItem = (string)comboBox.SelectedItem;
             try
             {
-                //access books
-                string BookJSON = File.ReadAllText(path);
-                JObject json = JObject.Parse(BookJSON);
+                MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
 
-                JObject CustoTarget = (JObject)json[SelectedItem];
-
-                string custo_target = CustoTarget.ToString();
-
-                Customer foundCusto = new Customer();
-                Newtonsoft.Json.JsonConvert.PopulateObject(custo_target, foundCusto);
-                firstTextBox.Text = foundCusto.first; 
-                lastTextBox.Text = foundCusto.last;
-                addressTextBox.Text = foundCusto.address;
-                cityTextBox.Text = foundCusto.city;
-                stateTextBox.Text = foundCusto.state;
-                zipTextBox.Text = foundCusto.zip;
-                PhoneTextBox.Text = foundCusto.phone;
-                emailTextBox.Text = foundCusto.email;
-
-                tempfirst = foundCusto.first;
-                templast = foundCusto.last;
-
+                SelectedItem = comboBox.SelectedItem.ToString();
+                string[] name = SelectedItem.Split(null);
+                
+                string query = $"SELECT * FROM bookstore.customers WHERE first = \"{name[0]}\" AND last = \"{name[1]}\"";
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    firstTextBox.Text = reader["first"].ToString();
+                    lastTextBox.Text = reader["last"].ToString();
+                    addressTextBox.Text = reader["address"].ToString();
+                    cityTextBox.Text = reader["city"].ToString();
+                    stateTextBox.Text = reader["state"].ToString();
+                    zipTextBox.Text = reader["zip"].ToString();
+                    emailTextBox.Text = reader["email"].ToString();
+                    PhoneTextBox.Text = reader["phone"].ToString();
+                    tempfirst = reader["first"].ToString();
+                    templast = reader["last"].ToString();
+                }
             }
-            catch
+
+
+            catch (Exception ex)
             {
+                MessageBox.Show(ex.Message);
                 //clear form
                 firstTextBox.Clear();
                 lastTextBox.Clear();
@@ -249,15 +263,24 @@ namespace BookStore
                 PhoneTextBox.Clear();
                 //emailTextBox.Clear();
             }
-
+            finally
+            {
+                connection.Close();
+            }
             comboBox.Focus();
         }
 
         private void cancelButton_Click(object sender, EventArgs e)
         {
-            this.comboBox.Enabled = true;
-            newCustomerRequested = 0;
-            ClearTextBoxes();
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to cancel adding new customer?", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                this.comboBox.Enabled = true;
+                newCustomerRequested = 0;
+                ClearTextBoxes();
+                MessageBox.Show("Your request has been cancelled.");
+            }
+            else if (dialogResult == DialogResult.No) { }
         }
 
         private void backButton_Click(object sender, EventArgs e)
@@ -295,7 +318,7 @@ namespace BookStore
         {
             if (newCustomerRequested == 1) {
                 this.comboBox.Enabled = false;
-                AddCustomer(firstTextBox.Text + " " + lastTextBox.Text);
+                AddCustomer();
                 populateComboBox();
 
             }
@@ -356,23 +379,31 @@ namespace BookStore
                         MessageBox.Show("Please select customer from list", "Save Error");
                         return;
                     }
-                    string custoJSON = File.ReadAllText(path);
-                    JObject json = JObject.Parse(custoJSON);
-                    json[SelectedItem]["address"] = addressTextBox.Text;
-                    json[SelectedItem]["city"] = cityTextBox.Text;
-                    json[SelectedItem]["state"] = stateTextBox.Text;
-                    json[SelectedItem]["zip"] = zipTextBox.Text;
-                    json[SelectedItem]["phone"] = PhoneTextBox.Text;
-                    json[SelectedItem]["email"] = emailTextBox.Text;
-                    if (tempfirst != firstTextBox.Text.ToString() || templast != lastTextBox.Text.ToString())
+                    try
                     {
-                        MessageBox.Show("Cannot update first or last name, please create new customer", "Overwrite Error");
-                        firstTextBox.Text = tempfirst;
-                        lastTextBox.Text = templast;
-                        return;
+                        string MyConnection2 = "Datasource=localhost;port=3306;username=root;password=";
+
+                        string Query = $"UPDATE bookstore.customers SET first = '{firstTextBox.Text}', last = '{lastTextBox.Text}', address = '{addressTextBox.Text}', " +
+                            $"city = '{cityTextBox.Text}', state = '{stateTextBox.Text}', zip = '{zipTextBox.Text}', phone = '{PhoneTextBox.Text}', email = '{emailTextBox.Text}'  " +
+                            $"WHERE first = '{firstTextBox.Text}' AND last = '{lastTextBox.Text}'";
+
+                        MySqlConnection MyConn2 = new MySqlConnection(MyConnection2);
+
+                        MySqlCommand MyCommand2 = new MySqlCommand(Query, MyConn2);
+
+                        MyConn2.Open();
+
+                        if (MyCommand2.ExecuteNonQuery() == 1 && tempfirst == firstTextBox.Text && templast == lastTextBox.Text)
+                            MessageBox.Show("Customer Updated Successfully");
+                        else
+                            MessageBox.Show("Not updated, Are you trying to update first or last name?");
+                        populateComboBox();
+                        MyConn2.Close();//Connection closed here 
                     }
-                    File.WriteAllText(path, json.ToString());
-                    populateComboBox();
+                    catch (Exception ex)
+                    {
+                        MessageBox.Show(ex.Message);
+                    }
                     ClearTextBoxes();
 
                     statusTextBox.Text = "Customer Info Updated Successfully";

@@ -31,7 +31,7 @@
             this.buttonManageCustomers = new System.Windows.Forms.Button();
             this.buttonManageBooks = new System.Windows.Forms.Button();
             this.buttonPlaceOrder = new System.Windows.Forms.Button();
-            this.label1 = new System.Windows.Forms.Label();
+            this.label2 = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // buttonManageCustomers
@@ -64,22 +64,22 @@
             this.buttonPlaceOrder.UseVisualStyleBackColor = true;
             this.buttonPlaceOrder.Click += new System.EventHandler(this.buttonPlaceOrder_Click);
             // 
-            // label1
+            // label2
             // 
-            this.label1.AutoSize = true;
-            this.label1.Font = new System.Drawing.Font("Microsoft Sans Serif", 25F, System.Drawing.FontStyle.Regular, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
-            this.label1.Location = new System.Drawing.Point(209, 53);
-            this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(385, 39);
-            this.label1.TabIndex = 3;
-            this.label1.Text = "Welcome To Book Store";
+            this.label2.AutoSize = true;
+            this.label2.Font = new System.Drawing.Font("Segoe Script", 24.75F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+            this.label2.Location = new System.Drawing.Point(199, 46);
+            this.label2.Name = "label2";
+            this.label2.Size = new System.Drawing.Size(411, 55);
+            this.label2.TabIndex = 21;
+            this.label2.Text = "Welcome to Book Store";
             // 
             // MainMenu
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
-            this.Controls.Add(this.label1);
+            this.Controls.Add(this.label2);
             this.Controls.Add(this.buttonPlaceOrder);
             this.Controls.Add(this.buttonManageBooks);
             this.Controls.Add(this.buttonManageCustomers);
@@ -95,6 +95,6 @@
         private System.Windows.Forms.Button buttonManageCustomers;
         private System.Windows.Forms.Button buttonManageBooks;
         private System.Windows.Forms.Button buttonPlaceOrder;
-        private System.Windows.Forms.Label label1;
+        private System.Windows.Forms.Label label2;
     }
 }

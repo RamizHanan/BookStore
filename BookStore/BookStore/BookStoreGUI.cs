@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using System.Windows.Forms;
 using Newtonsoft.Json;
 using Newtonsoft.Json.Linq;
+using MySql.Data.MySqlClient;
 
 
 namespace BookStore
@@ -27,22 +28,11 @@ namespace BookStore
 
             try
             {
-                // deserialize JSON directly from a file
-                string BookJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Books.json");
-                JObject json = JObject.Parse(BookJSON);
-                //access books
-                JArray bookList = (JArray)json["Books"];
-                //made list of only book names for the combobox. See JSON File
-                List<string> Books = JsonConvert.DeserializeObject<List<string>>(bookList.ToString());
-                comboBox1.Items.Clear();
-                for (int i = 0; i < Books.Count; i++)
-                {
-                    comboBox1.Items.Add(json[Books[i]]["bookName"].ToString());
-                }
-
+                populateComboBox();
+                populateComboBox2();
             }
             catch {
-                TotalText.Text = "Check JSON File/Location";
+                TotalText.Text = "Check db Connection";
             }
 
         }
@@ -78,35 +68,68 @@ namespace BookStore
         }
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e) //event handle when picking an item
         {
-            string SelectedItem = (string)comboBox1.SelectedItem;
-        
             try
             {
-                //access books
-                string BookJSON = File.ReadAllText(@"C:\Users\RMBonMAC\Documents\GitHub\BookStore\BookStore\BookStore\bin\Debug\Books.json");
-                JObject json = JObject.Parse(BookJSON);
-                
-                JObject BookTarget = (JObject)json[SelectedItem];
+                MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
 
-                string book_target = BookTarget.ToString();
-
-                Book foundBook = new Book();
-                Newtonsoft.Json.JsonConvert.PopulateObject(book_target, foundBook);
-                AuthorText.Text = foundBook.author; ;
-                IsbnText.Text = foundBook.ISBN;
-                PriceText.Text = foundBook.price.ToString();
-                
+                string selectedItem = $"\"{comboBox1.SelectedItem.ToString()}\"";
+                string query = "SELECT * FROM bookstore.books WHERE title = " + selectedItem;
+                connection.Open();
+                MySqlCommand command = new MySqlCommand(query, connection);
+                MySqlDataReader reader = command.ExecuteReader();
+                if (reader.Read())
+                {
+                    AuthorText.Text = reader["author"].ToString();
+                    PriceText.Text = reader["price"].ToString();
+                    IsbnText.Text = reader["ISBN"].ToString();
+                    
+                }
+                connection.Close();
             }
-            catch {
+            catch (Exception ex)
+            {
+                MessageBox.Show(ex.Message);
                 //clear form
                 AuthorText.Clear();
                 IsbnText.Clear();
                 PriceText.Clear();
+
             }
 
             QuantityText.Focus();
         }
 
+        void populateComboBox() {
+
+            MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+
+            string selectedQuery = "SELECT * FROM bookstore.books";
+            connection.Open();
+            MySqlCommand command = new MySqlCommand(selectedQuery, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            comboBox1.Items.Clear();
+            while (reader.Read())
+            {
+                comboBox1.Items.Add(reader.GetString("title"));
+            }
+            connection.Close();
+
+        }
+        private void populateComboBox2()
+        {
+            MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+
+            string selectedQuery = "SELECT * FROM bookstore.customers";
+            connection.Open();
+            MySqlCommand command = new MySqlCommand(selectedQuery, connection);
+            MySqlDataReader reader = command.ExecuteReader();
+            comboBox2.Items.Clear();
+            while (reader.Read())
+            {
+                comboBox2.Items.Add(reader.GetString("first") + " " + reader.GetString("last"));
+            }
+            connection.Close();
+        }
         public void SaveToTxt(string receipt) {
 
             //write string to file
@@ -230,6 +253,11 @@ namespace BookStore
             MainMenu store = new MainMenu();
             store.Show();
             Hide();
+        }
+
+        private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
+        {
+
         }
     }
 }
