@@ -41,7 +41,7 @@ namespace BookStore
             }
             catch
             {
-                statusTextBox.Text = "Check JSON File/Location";
+                statusTextBox.Text = "Cannot connect to database.";
             }
         }
         private void populateComboBox() {

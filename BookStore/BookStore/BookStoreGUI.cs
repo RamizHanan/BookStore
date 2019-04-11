@@ -37,7 +37,7 @@ namespace BookStore
 
         }
         
-        private void AddTitle_Click(object sender, EventArgs e)
+        public void AddTitle_Click(object sender, EventArgs e)
         {
              //get title of book
             try
@@ -49,13 +49,13 @@ namespace BookStore
                     decimal? totalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
                     // Populate the rows.
                     string selectedItem = (string)comboBox1.SelectedItem;
-                    string[] row = new string[] { selectedItem, "$" + PriceText.Text, Quantity.ToString(), "$" + totalCost.ToString() };//populate and add row
+                    string[] row = new string[] { selectedItem, PriceText.Text, Quantity.ToString(), totalCost.ToString() };//populate and add row
                    //populate dataGridView upon click Add Title
                     dataGridView1.Rows.Add(row);
                     subTotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
-                    Subtotal_Text.Text = "$" + subTotal.ToString();
+                    Subtotal_Text.Text =subTotal.ToString();
                     TaxText.Text =(subTotal * tax).ToString();
-                    TotalText.Text = "$" + ((subTotal * tax) + subTotal).ToString();
+                    TotalText.Text = ((subTotal * tax) + subTotal).ToString();
                 }
                 else { MessageBox.Show("Please enter a valid number");
                     QuantityText.Focus();//cursor on field
@@ -157,8 +157,13 @@ namespace BookStore
             }
             else
             {//populate receipt
+                string customer, title;
+                double price, total, subtotal;
+                int qty;
+                string dateTimeString = DateTime.Now.ToString("yyyy’-‘MM’-‘dd’HH’:’mm’:’ss");
                 Dictionary<string, string> order = new Dictionary<string, string>();
                 string itemDesc = "";
+                List<string> info= new List<string>();
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
                     string key = "Item " + (i+1).ToString();
@@ -166,20 +171,31 @@ namespace BookStore
                     {
                         string columnName = dataGridView1.Columns[j].Name + ": ";
                         itemDesc += columnName + dataGridView1[j, i].Value.ToString() + "    ";
+                        info.Add(dataGridView1[j, i].Value.ToString());
                     }
-                    order.Add(key, itemDesc);
-                    itemDesc = "";
+                    customer = selectedCustomer; //add to SQL here
+                    title = info[0];
+                    price = System.Convert.ToDouble(info[1]);
+                    bool quantity = int.TryParse(info[2], out qty);
+                    subtotal = qty * System.Convert.ToDouble(info[1]);
+                    total = (0.17 * subtotal + subtotal);
+
+                    MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+
+                    connection.Open();
+                    string sql = $"INSERT IGNORE INTO bookstore.orders (customer,title,price,qty,subtotal,total,datetime) VALUES ('{customer}','{title}','{price.ToString()}','{qty.ToString()}','{subtotal.ToString()}','{total.ToString()}', NOW())";
+                    MySqlCommand cmd = new MySqlCommand(sql, connection);
+                    cmd.ExecuteNonQuery();
+                    connection.Close();
+
                 }
-                //format receipt txt file
-                string totalItems = "Subtotal: " + Subtotal_Text.Text + "   Tax: 10.00%" + "   Tax Total: " + TaxText.Text + "   Total: " + TotalText.Text;
-                order.Add("Order Total", totalItems);
-                string dateTimeString = $"{DateTime.Today.ToString("d")} {DateTime.Now.ToString("HH:mm:ss")}";
-                order.Add("Transaction Completed", dateTimeString);
-                string receipt = JsonConvert.SerializeObject(order,Formatting.Indented);
-                SaveToTxt(receipt);
+
+                MessageBox.Show("Thank you! Your order has been placed!");
+
+
+                //SaveToTxt(receipt);
                 dataGridView1.Rows.Clear(); //clear fields
                 ClearTextBoxes();//clear boxes
-                MessageBox.Show("Thank you! Your order has been placed!");
             }
         }
 
@@ -254,10 +270,11 @@ namespace BookStore
             store.Show();
             Hide();
         }
-
+        string selectedCustomer;
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-
+            
+            selectedCustomer = comboBox2.SelectedItem.ToString();
         }
     }
 }
