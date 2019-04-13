@@ -18,7 +18,7 @@ namespace BookStore
     public partial class BookStoreGUI : Form
     {
         public const Double tax = .1;
-        public Double? subTotal = 0;
+        public Double subTotal = 0;
         public BookStoreGUI()
         {
             InitializeComponent();
@@ -46,16 +46,16 @@ namespace BookStore
                 bool Qty = int.TryParse(QuantityText.Text, out Quantity); //grab number input
                 if (Qty && Quantity != 0 && !(Quantity < 0)) //handle exception 0 and negative numbers
                 {
-                    decimal? totalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
+                    decimal totalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
                     // Populate the rows.
                     string selectedItem = (string)comboBox1.SelectedItem;
                     string[] row = new string[] { selectedItem, PriceText.Text, Quantity.ToString(), totalCost.ToString() };//populate and add row
                    //populate dataGridView upon click Add Title
                     dataGridView1.Rows.Add(row);
                     subTotal += Quantity * Convert.ToDouble(PriceText.Text); //add total
-                    Subtotal_Text.Text =subTotal.ToString();
-                    TaxText.Text =(subTotal * tax).ToString();
-                    TotalText.Text = ((subTotal * tax) + subTotal).ToString();
+                    Subtotal_Text.Text =Math.Round(subTotal,2).ToString();
+                    TaxText.Text =(Math.Round(subTotal * tax,2)).ToString();
+                    TotalText.Text = (Math.Round((subTotal * tax) + subTotal,2)).ToString();
                 }
                 else { MessageBox.Show("Please enter a valid number");
                     QuantityText.Focus();//cursor on field
@@ -159,35 +159,37 @@ namespace BookStore
             {//populate receipt
                 string customer, title;
                 double price, total, subtotal;
-                int qty;
                 string dateTimeString = DateTime.Now.ToString("yyyy’-‘MM’-‘dd’HH’:’mm’:’ss");
                 Dictionary<string, string> order = new Dictionary<string, string>();
-                string itemDesc = "";
                 List<string> info= new List<string>();
                 for (int i = 0; i < dataGridView1.Rows.Count; i++)
                 {
-                    string key = "Item " + (i+1).ToString();
+                    info.Clear();
+
                     for (int j = 0; j < dataGridView1.ColumnCount; j++)
                     {
-                        string columnName = dataGridView1.Columns[j].Name + ": ";
-                        itemDesc += columnName + dataGridView1[j, i].Value.ToString() + "    ";
                         info.Add(dataGridView1[j, i].Value.ToString());
                     }
                     customer = selectedCustomer; //add to SQL here
                     title = info[0];
                     price = System.Convert.ToDouble(info[1]);
-                    bool quantity = int.TryParse(info[2], out qty);
+                    bool quantity = int.TryParse(info[2], out int qty);
                     subtotal = qty * System.Convert.ToDouble(info[1]);
                     total = (0.17 * subtotal + subtotal);
-
+                    total = Math.Round(total, 2);
                     MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
 
                     connection.Open();
                     string sql = $"INSERT IGNORE INTO bookstore.orders (customer,title,price,qty,subtotal,total,datetime) VALUES ('{customer}','{title}','{price.ToString()}','{qty.ToString()}','{subtotal.ToString()}','{total.ToString()}', NOW())";
+                    string tempQuery = sql;
+                    try { 
                     MySqlCommand cmd = new MySqlCommand(sql, connection);
                     cmd.ExecuteNonQuery();
                     connection.Close();
-
+                    }
+                    catch(Exception ex) { 
+                    MessageBox.Show(ex.Message);
+                    }
                 }
 
                 MessageBox.Show("Thank you! Your order has been placed!");
@@ -201,7 +203,11 @@ namespace BookStore
 
         private void ClearTextBoxes() //Found on stack overflow
         {
-            comboBox1.SelectedIndex = -1;
+            comboBox1.Text = "";
+            comboBox1.SelectedValue = "";
+            comboBox2.Text = "";
+            comboBox2.SelectedValue = "";
+
             Action<Control.ControlCollection> func = null;
 
             func = (controls) =>//lambda expression
@@ -273,8 +279,14 @@ namespace BookStore
         string selectedCustomer;
         private void comboBox2_SelectedIndexChanged(object sender, EventArgs e)
         {
-            
-            selectedCustomer = comboBox2.SelectedItem.ToString();
+            try
+            {
+                selectedCustomer = comboBox2.SelectedItem.ToString();
+            }
+            catch
+            {
+                selectedCustomer = "";
+            }
         }
     }
 }
