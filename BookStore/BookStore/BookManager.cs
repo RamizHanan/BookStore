@@ -8,6 +8,8 @@ using System.Text;
 using System.Threading.Tasks;
 using System.Windows.Forms;
 using MySql.Data.MySqlClient;
+using System.Text.RegularExpressions;
+
 
 namespace BookStore
 {
@@ -17,10 +19,17 @@ namespace BookStore
         string selectedItem = "";
         int newBookRequested = 0;
         string tempTitle = "";
-
+        string title = "[^A-Za-z']";
+        string author = "[^A-Za-z']";
+        string price = @"^^\d+(,\d{1,2})?$";
+        string ISBN = @"^(?:ISBN(?:-1[03])?:? )?(?=[0-9X]{10}$|(?=(?:[0-9]+[- ]){3})
+                        [- 0-9X]{13}$|97[89][0-9]{10}$|(?=(?:[0-9]+[- ]){4})[- 0-9]{17}$)
+                        (?:97[89][- ]?)?[0-9]{1,5}[- ]?[0-9]+[- ]?[0-9]+[- ]?[0-9X]$";
         public BookManager()
         {
             InitializeComponent();
+            this.comboBox1.DropDownStyle = ComboBoxStyle.DropDownList;
+
         }
 
         private void comboBox1_SelectedIndexChanged(object sender, EventArgs e)
@@ -82,7 +91,7 @@ namespace BookStore
             }
             catch (Exception ex)
             {
-                MessageBox.Show("error", ex.Message);
+                MessageBox.Show( ex.Message);
             }
            
         }
@@ -125,7 +134,7 @@ namespace BookStore
         private int countFinder() {
             MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
             connection.Open();
-            string command = $"SELECT COUNT(*) FROM bookstore.books WHERE title = '{textBoxTitle.Text}'";
+            string command = $"SELECT COUNT(*) FROM bookstore.books WHERE title = '{textBoxNewTitle.Text}'";
             MySqlCommand counter = new MySqlCommand(command, connection);
             int records = Convert.ToInt32((counter.ExecuteScalar()));
 
@@ -144,7 +153,7 @@ namespace BookStore
                 int records = countFinder();
                 if(records == 0) {
                     connection.Open();
-                    string sql = $"INSERT IGNORE INTO bookstore.books (title, author, ISBN, price) VALUES ('{textBoxTitle.Text}','{textBoxAuthor.Text}', '{textBoxISBN.Text}','{textBoxPrice.Text}')";
+                    string sql = $"INSERT IGNORE INTO bookstore.books (title, author, ISBN, price) VALUES ('{textBoxNewTitle.Text}','{textBoxNewAuthor.Text}', '{textBoxNewISBN.Text}','{textBoxNewPrice.Text}')";
                     MySqlCommand cmd = new MySqlCommand(sql, connection);
                     cmd.ExecuteNonQuery();
                     MessageBox.Show("Book Successfully Created.");
@@ -185,8 +194,10 @@ namespace BookStore
 
                 if (MyCommand2.ExecuteNonQuery() == 1 && tempTitle == textBoxTitle.Text)
                     MessageBox.Show("Data Updated");
-                else
+                else {
                     MessageBox.Show("Not updated, Are you trying to update title?");
+                    textBoxTitle.Text = tempTitle;
+                }
                 load_combo();
                 MyConn2.Close();//Connection closed here 
             }
@@ -217,6 +228,88 @@ namespace BookStore
             MainMenu store = new MainMenu();
             store.Show();
             Hide();
+        }
+
+        private void buttonBack_Click_1(object sender, EventArgs e)
+        {
+            buttonBack_Click(sender, e);
+        }
+
+        private void comboBox1_SelectedIndexChanged_1(object sender, EventArgs e)
+        {
+            comboBox1_SelectedIndexChanged(sender, e);
+        }
+
+        private void textBoxTitle_TextChanged(object sender, EventArgs e)
+        {
+
+        }
+
+        private void buttonSave_Click_1(object sender, EventArgs e)
+        {
+            buttonSave_Click(sender, e);
+        }
+
+        private void buttonCancel_Click_1(object sender, EventArgs e)
+        {
+            buttonCancel_Click(sender, e);
+        }
+
+        private void buttonNewBook_Click_1(object sender, EventArgs e)
+        {
+            if (ValidateBoxes() == -1) { }
+            else if(ValidateBoxes() == 1)
+            {
+                DialogResult dialogResult = MessageBox.Show("Are you sure you want to add new book?", "Warning", MessageBoxButtons.YesNo);
+                if (dialogResult == DialogResult.Yes)
+                {
+                    createNewBook();
+                }
+                else if (dialogResult == DialogResult.No) { }
+                
+            }
+            
+        }
+        private void CancelAdd_Click(object sender, EventArgs e)
+        {
+            buttonCancel_Click(sender, e);
+        }
+        private int ValidateBoxes() {
+            if (textBoxNewTitle.Text == "" || Regex.IsMatch(textBoxNewTitle.Text, title))
+            {
+
+                MessageBox.Show("Please Enter title", "Title is a required field");
+                textBoxNewTitle.Focus();
+                return -1;
+            }
+            else if (textBoxNewAuthor.Text == "" || Regex.IsMatch(textBoxNewAuthor.Text, author))
+            {
+
+                MessageBox.Show("Please Enter Author Name", "Author name is a required field");
+                textBoxNewAuthor.Focus();
+                return -1;
+            }
+            else if (textBoxNewISBN.Text == "" || Regex.IsMatch(textBoxNewISBN.Text, ISBN))
+            {
+
+                MessageBox.Show("Please Enter 10 or 13 digit ISBN", "ISBN is a required field");
+                textBoxNewISBN.Focus();
+                return -1;
+            }
+            else if (textBoxNewPrice.Text == "" || Regex.IsMatch(textBoxNewPrice.Text, price))
+            {
+
+                MessageBox.Show("Please Enter Price in format xx.xx", "Price is a required field");
+                textBoxNewPrice.Focus();
+                return -1;
+            }
+            else { return 1; }
+            
+        }
+
+        private void button1_Click(object sender, EventArgs e)
+        {
+            buttonBack_Click(sender, e);
         }
     }
 }

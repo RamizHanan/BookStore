@@ -48,7 +48,7 @@ namespace BookStore
                 {
                     decimal totalCost = Quantity * Convert.ToDecimal(PriceText.Text);//Get the total
                     // Populate the rows.
-                    string selectedItem = (string)comboBox1.SelectedItem;
+                    string selectedItem = comboBox1.SelectedItem.ToString();
                     string[] row = new string[] { selectedItem, PriceText.Text, Quantity.ToString(), totalCost.ToString() };//populate and add row
                    //populate dataGridView upon click Add Title
                     dataGridView1.Rows.Add(row);
@@ -151,54 +151,68 @@ namespace BookStore
 
         private void ConfirmOrderButton_Click(object sender, EventArgs e)
         {
+            if (selectedCustomer is null)
+            {
+                MessageBox.Show("Please select customer from list", "Order Error");
+                return;
+            }
             if (dataGridView1.Rows.Count == 0)
             {//means nothing was added
                 MessageBox.Show("Please add a book to check out.");
+                return;
             }
-            else
-            {//populate receipt
-                string customer, title;
-                double price, total, subtotal;
-                string dateTimeString = DateTime.Now.ToString("yyyy’-‘MM’-‘dd’HH’:’mm’:’ss");
-                Dictionary<string, string> order = new Dictionary<string, string>();
-                List<string> info= new List<string>();
-                for (int i = 0; i < dataGridView1.Rows.Count; i++)
-                {
-                    info.Clear();
-
-                    for (int j = 0; j < dataGridView1.ColumnCount; j++)
+            DialogResult dialogResult = MessageBox.Show("Are you sure you want to place order?", "Warning", MessageBoxButtons.YesNo);
+            if (dialogResult == DialogResult.Yes)
+            {
+                
+                //populate receipt
+                    string customer, title;
+                    double price, total, subtotal;
+                    string dateTimeString = DateTime.Now.ToString("yyyy’-‘MM’-‘dd’HH’:’mm’:’ss");
+                    Dictionary<string, string> order = new Dictionary<string, string>();
+                    List<string> info = new List<string>();
+                    for (int i = 0; i < dataGridView1.Rows.Count; i++)
                     {
-                        info.Add(dataGridView1[j, i].Value.ToString());
+                        info.Clear();
+
+                        for (int j = 0; j < dataGridView1.ColumnCount; j++)
+                        {
+                            info.Add(dataGridView1[j, i].Value.ToString());
+                        }
+                        customer = selectedCustomer; //add to SQL here
+                        title = info[0];
+                        price = System.Convert.ToDouble(info[1]);
+                        bool quantity = int.TryParse(info[2], out int qty);
+                        subtotal = qty * System.Convert.ToDouble(info[1]);
+                        total = (0.17 * subtotal + subtotal);
+                        total = Math.Round(total, 2);
+                        MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
+
+                        connection.Open();
+                        string sql = $"INSERT IGNORE INTO bookstore.orders (customer,title,price,qty,subtotal,total,datetime) VALUES ('{customer}','{title}','{price.ToString()}','{qty.ToString()}','{subtotal.ToString()}','{total.ToString()}', NOW())";
+                        string tempQuery = sql;
+                        try
+                        {
+                            MySqlCommand cmd = new MySqlCommand(sql, connection);
+                            cmd.ExecuteNonQuery();
+                            connection.Close();
+                        }
+                        catch (Exception ex)
+                        {
+                            MessageBox.Show(ex.Message);
+                        }
                     }
-                    customer = selectedCustomer; //add to SQL here
-                    title = info[0];
-                    price = System.Convert.ToDouble(info[1]);
-                    bool quantity = int.TryParse(info[2], out int qty);
-                    subtotal = qty * System.Convert.ToDouble(info[1]);
-                    total = (0.17 * subtotal + subtotal);
-                    total = Math.Round(total, 2);
-                    MySqlConnection connection = new MySqlConnection("Datasource=localhost;port=3306;username=root;password=");
 
-                    connection.Open();
-                    string sql = $"INSERT IGNORE INTO bookstore.orders (customer,title,price,qty,subtotal,total,datetime) VALUES ('{customer}','{title}','{price.ToString()}','{qty.ToString()}','{subtotal.ToString()}','{total.ToString()}', NOW())";
-                    string tempQuery = sql;
-                    try { 
-                    MySqlCommand cmd = new MySqlCommand(sql, connection);
-                    cmd.ExecuteNonQuery();
-                    connection.Close();
-                    }
-                    catch(Exception ex) { 
-                    MessageBox.Show(ex.Message);
-                    }
-                }
-
-                MessageBox.Show("Thank you! Your order has been placed!");
+                    MessageBox.Show("Thank you! Your order has been placed!");
 
 
-                //SaveToTxt(receipt);
-                dataGridView1.Rows.Clear(); //clear fields
-                ClearTextBoxes();//clear boxes
+                    //SaveToTxt(receipt);
+                    dataGridView1.Rows.Clear(); //clear fields
+                    ClearTextBoxes();//clear boxes
+                
             }
+            else if (dialogResult == DialogResult.No) { }
+            
         }
 
         private void ClearTextBoxes() //Found on stack overflow
@@ -229,6 +243,8 @@ namespace BookStore
             {
                 dataGridView1.Rows.Clear();
                 ClearTextBoxes();
+                populateComboBox();
+                populateComboBox2();
                 MessageBox.Show("Your order has been cancelled.");
             }
             else if (dialogResult == DialogResult.No) { }
